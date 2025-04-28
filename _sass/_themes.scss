@@ -3,18 +3,18 @@
  ******************************************************************************/
  
 :root {
-  --global-bg-color: #{$white-color};
-  --global-code-bg-color: #{$code-bg-color-light};
-  --global-text-color: #{$black-color};
-  --global-text-color-light: #{$grey-color};
-  --global-theme-color: #{$purple-color};
-  --global-hover-color: #{$purple-color};
+  --global-bg-color: #EFF6E0;
+  --global-code-bg-color: #c8d5c9;
+  --global-text-color: #01161E;
+  --global-text-color-light: #01161E;
+  --global-theme-color: #124559;
+  --global-hover-color: #AEC3B0;
   --global-footer-bg-color: #{$grey-color-dark};
-  --global-footer-text-color: #{$grey-color-light};
-  --global-footer-link-color: #{$white-color};
+  --global-footer-text-color: #598392;
+  --global-footer-link-color: #241424;
   --global-distill-app-color: #{$grey-color};
-  --global-divider-color: rgba(0,0,0,.1);
-  --global-card-bg-color: #{$white-color};
+  --global-divider-color: hsl(197, 94%, 6%);
+  --global-card-bg-color: #EFF6E0;
 
   .fa-sun {
     display : none;
@@ -63,3 +63,5 @@ html[data-theme='dark'] {
     display: block;
   }
 }
+
+

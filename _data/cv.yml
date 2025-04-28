@@ -1,97 +1,118 @@
-- title: General Information
+- title: 
   type: map
   contents:
     - name: Full Name
-      value: Albert Einstein
-    - name: Date of Birth
-      value: 14th March 1879
+      value: Lukas Florian Münzel
     - name: Languages
-      value: English, German
+      value: English, German (native), Allemanic (native), French (B2)
 
 - title: Education
   type: time_table
   contents:
-    - title: PhD
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1905
+    - title: Bachelor of Science in Mathematics
+      institution: Eidgenössische Technische Hochschule (ETH), Zürich, Switzerland
+      year: 2022 - 2025
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
+        - title: "Current grade average: 5.85 / 6.0"
+          coursework: "bip"
           contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Federal teaching diploma
-      institution: Eidgenössische Technische Hochschule, Zurich, Switzerland
-      year: 1900
+            - DONT DELETE THIS MAGIC TEXT
+        - title: Coursework Fall 2025
+          coursework: "yes"
+          contents:
+            - Functional Analysis I
+            - Information Theory I
+            - Markov Processes
+            - Introductory Mandarin
+            - Seminar on Statistical-to-Computational Gaps
+        - title: Coursework Spring 2024
+          coursework: "yes"
+          contents:
+            - Dynamical Systems and Ergodic Theory
+            - Fourier Theory and Hilbert Spaces
+            - Mathematics of Signals, Systems, and Learning
+            - Probability and Statistics
+            - Topology
+        - title: Coursework Fall 2023
+          coursework: "yes"
+          contents:
+            - Deep Learning (graduate level)
+            - Measure Theory
+            - Algebra I
+            - Complex Analysis
+            - Numerical Analysis I
+        - title: Coursework Spring 2023
+          coursework: "yes_closed"
+          contents:
+            - Linear Algebra II
+            - Real Analysis II
+            - Models of Computation
+            - Group theory, Zermelo–Fraenkel set theory and logic
+            - Chemistry (audited)
+            - Introduction to Biology II (audited)
+        - title: Coursework Fall 2022
+          coursework: "yes_closed"
+          contents:
+            - Linear Algebra I
+            - Real Analysis I
+            - Neuromorphic Engineering I (graduate level, dropped after one month)
+            - Physics I
+            - Introduction to programming
+    - title: Maturitätszeugnis / Swiss high school diploma
+      institution: Gymnasium Bäumlihof, Basel
+      year: 2022
       description:
-        - Description 1.
-        - Description 2.
+        - Founded and lead a club in which motivated students could learn competitive programing and computational thinking
+        - Skipped two grades
+        - Graduated with highest praise and a grade average of 5.55 / 6.0, receiving the "Basler Maturapreis"
 
-- title: Experience
+- title: Research experience
   type: time_table
   contents:
-    - title: Professor of Theoretical Physics
-      institution: Institute for Advanced Study, Princeton University
-      year: 1933 - 1955
+    - title: Massachusetts Institute of Technology, Cambridge, MA
+      coursework: "normal"
+      institution: Only central European student selected for the <a href="https://www.cee.org/programs/research-science-institute">Research Science Institute 2021</a>
+      year: Jul - Aug 2021
       description:
-        - Description 1.
-        - Description 2.
-        - title: Description 3.
-          contents:
-            - Sub-description 1.
-            - Sub-description 2.
-    - title: Visiting Professor
-      institution: California Institute of Technology, Pasadena, California, US
-      year: 1933
+        # - Only Swiss and one of thirty international students selected for the Research Science Institute 2021
+        - Designed, programmed and conducted experiments to demonstrate the feasibility of a supplemental approach to training artificial neural networks under supervision of <a href="https://lizhongzheng.mit.edu/">Prof. Lizhong Zheng</a>
+        - Click <a href="https://drive.google.com/file/d/1qCjJuWBR_enKjlXeF7MT5NESa2wSQipd/view">here</a> for a presentation recording and <a href="https://lukasmuenzel.com/assets/pdf/RSI_paper.pdf">here</a> for the report
+    - title: Eidgenössische Technische Hochschule (ETH), Zurich, Switzerland
+      institution: Eight week full-time internship under supervision of <a href="https://ifd.ethz.ch/people/person-detail.pjenny.html">Prof. Patrick Jenny</a>
+      year: Jan - Mar 2021
       description:
-        - Description 1.
-        - Description 2.
-
-    - title: Director
-      institution: Kaiser Wilhelm Institute for Physics, Berlin, Germany.
-      year: 1917-1933
-
-    - title: Professor of Theoretical Physics
-      institution: Karl-Ferdinand University, Prague, Czechoslovakia
-      year: 1911 - 1917
-      description:
-
-    - title: Associate Professor of Theoretical Physics
-      institution: University of Zurich, Zurich, Switzerland
-      year: 1909 - 1911
-
-- title: Open Source Projects
-  type: time_table
-  contents:
-    - title: <a href="https://github.com/alshedivat/al-folio">al-folio</a>
-      year: 2015-now
-      description: A beautiful, simple, clean, and responsive Jekyll theme for academics.
+        - Optimized and implemented code for numerical fluid simulations in order to simulate airflow in lecture halls
+        - Designed and implemented a novel tool to edit the simulation meshes
+        - This work is in the process of being published with me as third author
 
 - title: Honors and Awards
   type: time_table
   contents:
-    - year: 1921
-      items: 
-        - Nobel Prize in Physics 
-        - Matteucci Medal
-    - year: 2029
-      items: 
-        - Max Planck Medal
-
-- title: Academic Interests
-  type: nested_list
-  contents:
-    - title: Topic 1.
-      items: 
-        - Description 1.
-        - Description 2.
-    - title: Topic 2.
+    - year: 2024
       items:
-        - Description 1.
-        - Description 2.
+        - Awarded membership to the <a href="https://en.wikipedia.org/wiki/Schweizerische_Studienstiftung">Swiss Study Foundation</a>
+    - year: 2022
+      items: 
+        - Gold medal and second place at the final round of the Swiss Olympiad in Informatics, representing Switzerland at the <b>International Olympiad in Informatics</b> in Indonesia
+        - Basler Maturapreis by Novartis. Selected for this price for ”outstanding dedication and accomplishments, socially and academically” out of a class of 111 students
+        - 15th place nationally in the second round, participating in the week-long final round involving various theoretical and laboratory exams
+    - year: 2020
+      items: 
+        - Second place at the final round of the Swiss Olympiad in Informatics and therefore qualifying for the International Olympiad in Informatics held virtually by Singapore
 
-- title: Other Interests
-  type: list
-  contents:
-    - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.
+# - title: Academic Interests
+#   type: nested_list
+#   contents:
+#     - title: Topic 1.
+#       items: 
+#         - Description 1.
+#         - Description 2.
+#     - title: Topic 2.
+#       items:
+#         - Description 1.
+#         - Description 2.
+
+# - title: Other Interests
+#   type: list
+#   contents:
+#     - <u>Hobbies:</u> Hobby 1, Hobby 2, etc.

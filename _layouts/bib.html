@@ -150,6 +150,23 @@
             <a href="{{ entry.pdf | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm z-depth-0" role="button">PDF</a>
             {%- endif %}
           {%- endif %}
+          {%- if entry.pdf_en %}
+            {% if entry.pdf_en contains '://' -%}
+            <a href="{{ entry.pdf_en }}" class="btn btn-sm z-depth-0" role="button">PDF (English)</a>
+            {%- else -%}
+            <a href="{{ entry.pdf_en | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm z-depth-0" role="button">PDF (English)</a>
+            {%- endif %}
+          {%- endif %}
+          {%- if entry.pdf_de %}
+          {% if entry.pdf_de contains '://' -%}
+          <a href="{{ entry.pdf_de }}" class="btn btn-sm z-depth-0" role="button">PDF (German)</a>
+          {%- else -%}
+          <a href="{{ entry.pdf_de | prepend: '/assets/pdf/' | relative_url }}" class="btn btn-sm z-depth-0" role="button">PDF (German)</a>
+          {%- endif %}
+          {%- endif %}
+          {%- if entry.video %}
+            <a href="{{ entry.video }}" class="btn btn-sm z-depth-0" role="button">Presentation recording</a>
+          {%- endif %}
           {%- if entry.supp %}
             {% if entry.supp contains '://' -%}
             <a href="{{ entry.supp }}" class="btn btn-sm z-depth-0" role="button">Supp</a>
