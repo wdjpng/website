@@ -2,6 +2,8 @@
 permalink: /robots.txt
 ---
 User-agent: *
-Disallow:
+Disallow: /rationality/
+Disallow: /callista/
+Disallow: /assets/img/callista/
 
 Sitemap: {{ site.baseurl | prepend: site.url }}/sitemap.xml
