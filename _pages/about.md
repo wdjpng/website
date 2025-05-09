@@ -3,7 +3,7 @@ layout: about
 title: about
 giscus_comments: true
 permalink: /
-subtitle: Undergraduate student in mathematics at ETH Zurich fascinated by how intelligence emerges
+subtitle:Studying math at Eth Zurich, currently on an exchange semester at UC Berkeley
 profile:
   align: right
   image: prof_pic.jpg

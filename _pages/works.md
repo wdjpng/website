@@ -3,7 +3,7 @@ layout: page
 permalink: /works/
 title: works
 description: a small collection of my written work so far
-years: [2023, 2021, 2020]
+years: [2025, 2024, 2023, 2021, 2020]
 nav: true
 nav_order: 1
 ---
