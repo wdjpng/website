@@ -2,13 +2,13 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: blank # the website title (if blank, full name will be used instead)
+title: Lukas F. Münzel # the website title (if blank, full name will be used instead)
 first_name: Lukas
 middle_name: F.
 last_name: Münzel
 email: lmuenzel@student.ethz.ch
 description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A simple, whitespace theme for academics. Based on [*folio](https://github.com/bogoli/-folio) design.
+  The personal website and blog of Lukas F. Münzel (Lukas F. Munzel), showcasing research, projects, and publications.
 footer_text: 
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
@@ -55,8 +55,8 @@ max_width: 800px
 # Open Graph & Schema.org
 # -----------------------------------------------------------------------------
 # Display links to the page with a preview object on social media.
-serve_og_meta: false # Include Open Graph meta tags in the HTML head
-serve_schema_org: false # Include Schema.org in the HTML head
+serve_og_meta: true # Include Open Graph meta tags in the HTML head
+serve_schema_org: true # Include Schema.org in the HTML head
 og_image: # The site-wide (default for all links) Open Graph preview image
 
 # -----------------------------------------------------------------------------
