@@ -3,7 +3,7 @@ layout: about
 title: about
 giscus_comments: true
 permalink: /
-subtitle:Studying math at Eth Zurich, currently on an exchange semester at UC Berkeley
+subtitle: Studying math at Eth Zurich, currently on an exchange semester at UC Berkeley
 profile:
   align: right
   image: prof_pic.jpg
@@ -23,7 +23,7 @@ Cheers,
 
 Lukas
 
-**Do you know me personally? I think anonymous feedback on where to improve can be incredibly useful. So if there is anything you want to say, I highly encourage you to fill out [this](https://forms.gle/THwdJnWoRrAp3Apv8) form. Thanks!**
+*I set up a [feedback form](https://forms.gle/THwdJnWoRrAp3Apv8). If there is anything you'd like to anonymously tell me, I'd be grateful if you let me know there :)*
 
 ***
 Short summary of my CV:
