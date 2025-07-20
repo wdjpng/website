@@ -19,7 +19,6 @@ horizontal: false
 {:start="3"}
 
 *Originally written as part of a cold-email to John Schulman in July 2025. If you have any thoughts or also find these questions exciting, [write me a mail](mailto:muenzel.lukas@gmail.com)!*
-
 <!-- 
 ##### Footnotes:
 [^1]: OpenAI, Google, Anthropic, Thinking Machines, xAI, and  Meta -->
