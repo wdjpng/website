@@ -248,7 +248,7 @@ In the initial rounds when strategies require historical attendance data that is
 
 ### Academic integrity statement on responsible use of AI:
 
-1. We extensively used code generation tools such as cursor and claude code. All code used to generate the results in this report was proofread by us to a sufficient degree that we reasonably comfortable being held accountable for any bugs that may be present in it.
+1. We extensively used code generation tools such as cursor and claude code. All code used to generate the results in this report was proofread by us to a sufficient degree that we are reasonably comfortable being held accountable for any bugs that may be present in it.
 2. No single word of writing was copy-pasted from Generative AI output. However, such tools were used to get feedback, brainstorm, find grammatical or orthographic mistakes or suggest better formulations while never e.g. ad verbatim copying a phrase.
  
 Signed,
