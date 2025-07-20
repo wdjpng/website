@@ -83,14 +83,16 @@ $$
 \end{align*}
 $$
 
-Where $$|\log(\epsilon_n+1)-\epsilon_n| < C\epsilon_n$$ holds for $$|\epsilon_n| < \frac{1}{2}$$ and some $C>0$ because the first order Taylor expansion of $$\log(x+1)$$ is $$x$$, yielding a remainder that is $$O(x²)$$[^1]. 
+
+Where
+$$|\log(\epsilon_n+1)-\epsilon_n| < C\epsilon_n$$ holds for $$|\epsilon_n| < \frac{1}{2}$$ and some $$C>0$$ because the first order Taylor expansion of $$\log(x+1)$$ is $$x$$, yielding a remainder that is $$O(x²)$$[^1]
 
 Now, since $$\epsilon_n$$ goes to zero uniformly, $$\sup_{x\in \mathbb R} \epsilon_n(x)$$ goes to zero, this proves that $$\lambda_{opt,n} \to 1$$ as $$n \to \infty$$
 
 
 Small note: division by zero is not a problem since the ratio $$r$$ has variance one iff $$p=q$$, in which case any $$\lambda$$ results in zero variance. Note furthermore that we never explicitly needed the probability distributions to admit densitites - the entire proof also tracks with a Radon-Nikodym derivative that has finite variance and converges uniformly to one.
 
-Important caveat: this rigorous proof does not yet prove that the optimal $$\lambda$$ converges in the gaussian case we visualized above (because convergence of the ratio is not uniform). 
+Important caveat: this more rigorous proof does not yet prove that the optimal $$\lambda$$ converges in the gaussian case we visualized above (because convergence of the ratio is not uniform). 
 
 [^1]: This is a standard analysis argument that just follows from the explicit [formula for the remainder in the Taylor polynomial](https://en.wikipedia.org/wiki/Taylor's_theorem#Explicit_formulas_for_the_remainder) that is proved via induction on the mean value theorem and then noting that the second derivative of $$\log(1+x)$$ is bounded on $$[-\frac{1}{2}, \frac{1}{2}]$$ by some $$C>0$$
 <!-- <!-- Just for fun and completeness, here the proper proof for why the error of the first-order Taylor approximation is There exists $$C>0$$ such that in some neighbourhood of zero, $$|log(1+z)-z| \leq Cz^2$$ -->
