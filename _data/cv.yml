@@ -10,10 +10,10 @@
   type: time_table
   contents:
     - title: Bachelor of Science in Mathematics
-      institution: Eidgenössische Technische Hochschule (ETH), Zürich, Switzerland
+      institution: ETH Zürich
       year: 2022 - 2025
       description:
-        - title: "Current grade average: 5.85 / 6.0"
+        - title: "Current grade average: 5.8 / 6.0. Spent a wonderful spring semester 2025 on exchange at UC Berkeley"
           coursework: "bip"
           contents:
             - DONT DELETE THIS MAGIC TEXT
@@ -25,6 +25,8 @@
             - Markov Processes
             - Introductory Mandarin
             - Seminar on Statistical-to-Computational Gaps
+            - Probability Theory
+            - Fundamentals of Mathematical Statistics
         - title: Coursework Spring 2024
           coursework: "yes"
           contents:
@@ -58,6 +60,12 @@
             - Neuromorphic Engineering I (graduate level, dropped after one month)
             - Physics I
             - Introduction to programming
+    - title: Independent work from exchange semester
+      institution: Independent work from exchange semester
+      year: 2025
+      description:
+        - Proved optimality of the KL divergence estimator introduced by John Schulman that is used in PPO and GRPO
+        - 'Blogpost: <a href="https://lukasmuenzel.com/kl_estimator">A small observation on Schulmann''s KL divergence estimator</a>'
     - title: Maturitätszeugnis / Swiss high school diploma
       institution: Gymnasium Bäumlihof, Basel
       year: 2022
