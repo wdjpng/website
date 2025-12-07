@@ -3,7 +3,7 @@ layout: page
 title: questions
 permalink: /questions/
 description: 
-nav: true
+nav: false
 nav_order: 4
 horizontal: false
 ---
