@@ -34,8 +34,7 @@ Cheers,
 
 Lukas
 
-<mark>I am really grateful for <a href="https://forms.gle/THwdJnWoRrAp3Apv8"><u>anonymous feedback</u></a> :)
-</mark>
+PS: [Here](https://lukasmuenzel.com/questions/) some of the questions I am currently wondering about
 
 ***
 Short summary of my CV:

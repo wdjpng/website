@@ -1,8 +1,9 @@
 ---
 layout: page
-title: 
+title: questions
 permalink: /questions/
 description: 
+nav: true
 nav_order: 4
 horizontal: false
 ---
