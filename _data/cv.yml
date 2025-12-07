@@ -18,7 +18,7 @@
           contents:
             - DONT DELETE THIS MAGIC TEXT
         - title: Coursework Fall 2025
-          coursework: "yes"
+          coursework: "yes_closed"
           contents:
             - Functional Analysis I
             - Information Theory I
@@ -28,7 +28,7 @@
             - Probability Theory
             - Fundamentals of Mathematical Statistics
         - title: Coursework Spring 2024
-          coursework: "yes"
+          coursework: "yes_closed"
           contents:
             - Dynamical Systems and Ergodic Theory
             - Fourier Theory and Hilbert Spaces
@@ -36,7 +36,7 @@
             - Probability and Statistics
             - Topology
         - title: Coursework Fall 2023
-          coursework: "yes"
+          coursework: "yes_closed"
           contents:
             - Deep Learning (graduate level)
             - Measure Theory
