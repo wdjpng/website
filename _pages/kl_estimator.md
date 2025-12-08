@@ -8,10 +8,10 @@ display_categories: [work, fun]
 horizontal: false
 
 ---
+In 2020, John Schulman published a blog describing an estimator for the KL divergence that is now used in GRPO and variants of PPO.
+This estimator has parameter $\lambda$ that can be chosen freely. Schulman uses $\lambda=1$ because the estimator is then always non-negative.
 
-There is a parameter in [Schulmann's KL divergence estimator](http://joschu.net/blog/kl-approx.html) which can be chosen arbitrarily. Schulmann simply choses it to be 1, arguing that this yields an unbiased estimator that is always non-negative. 
-
-But setting this parameter to one actually give us another very interesting property! Namely, it minimizes the variance of the estimator - at least if the two distributions whose KL divergence we are estimating are close
+But setting $\lambda \approx 1$ to one actually give us another very interesting property! Namely, it minimizes the variance of the estimator - at least if the two distributions whose KL divergence we are estimating are close
 
 # A quick recall
 
@@ -97,6 +97,7 @@ Small note: division by zero is not a problem since the ratio $$r$$ has variance
 Important caveat: this more rigorous proof does not yet prove that the optimal $$\lambda$$ converges in the gaussian case we visualized above (because convergence of the ratio is not uniform). 
 
 [^1]: This is a standard analysis argument that just follows from the explicit [formula for the remainder in the Taylor polynomial](https://en.wikipedia.org/wiki/Taylor's_theorem#Explicit_formulas_for_the_remainder) that is proved via induction on the mean value theorem and then noting that the second derivative of $$\log(1+x)$$ is bounded on $$[-\frac{1}{2}, \frac{1}{2}]$$ by some $$C>0$$
+
 <!-- <!-- Just for fun and completeness, here the proper proof for why the error of the first-order Taylor approximation is There exists $$C>0$$ such that in some neighbourhood of zero, $$|log(1+z)-z| \leq Cz^2$$ -->
 <!-- First note that there exists some $$C > 0$$ s.t. $$|log(1+z) - z| \leq C \epsilon(x)^$$ in $$[0.5, 1.5]}$$ because $$f(z) = log(1+z) - z$$ is smooth on $$[-\frac{1}{2}, \frac{1}{2}]$$ and has $$f(0) = f'(0) = 0$$. By mean value theorem, for every $$z \in [-\frac{1}{2}, \frac{1}{2}]$$, there exists $$\zeta_z$$ with $$|\zeta_z| \leq z$$ such that $$f(z) = f'(\zeta_z) z$$. Applying mean value theorem again yields that there exists a $$\zeta_z' \in [-\frac{1}{2}, \frac{1}{2}]$$ such that $$f'(\zeta_z) = f''(\zeta_z') \zeta_z$$. Combining these claims yields that $$f(z) = f''(\zeta_z')z\zeta_z z$$. Since $$f''$$ is bounded on $$[-\frac{1}{2}, \frac{1}{2}]$$ and $$|zeta_z| \leq z$$, the claim follows. --> 
 
