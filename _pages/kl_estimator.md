@@ -32,7 +32,7 @@ We let q be a unit gaussian and p a gaussian of standard deviation sigma and mea
 Interestingly, we see that when p has around the same mean and variance as q, the optimal choice of lambda is indeed given by around one. We can actually derive this analytically:
 
 # Derivation
-Let $$L(x) = -\log r(x) + \lambda (r-1)$$ be the estimator discussed before. Its variance is given by $$\mathrm{Var}_p[L(x)] = \mathrm{Var}_p[\log r(x)] + \lambda^2 \mathrm{Var}_p[r(x)] - 2 \lambda \mathrm{Cov}_p[\log r(x), r(x)]$$
+Let $$L(x) = -\log r(x) + \lambda (r(x)-1)$$ be the estimator discussed before. Its variance is given by $$\mathrm{Var}_p[L(x)] = \mathrm{Var}_p[\log r(x)] + \lambda^2 \mathrm{Var}_p[r(x)] - 2 \lambda \mathrm{Cov}_p[\log r(x), r(x)]$$
 
 To minimize this variance with respect to $$\lambda$$, we take the derivative and set it to zero:
 $$
@@ -67,13 +67,15 @@ $$
 As I will soon be receveing a degree in mathematics, I feel morally obliged to also include an explanation that is less likely to make a mathematician's eyes bleed:
 
 # Same thing but more rigorous
-Assume $$p_n$$ and $$q_n$$ are sequences of probability distributions such that the ratio $$r_n(x) = q_n(x)/p_n(x)$$ has finite variance and converges uniformly to 1 as $$n \to \infty$$. Then with $$\epsilon_n = r_n(x) -1$$, we apply Cauchy-Schwarz to obtain that for $$n$$ large enough,
+Assume $$p_n$$ and $$q_n$$ are sequences of probability distributions such that the ratio $$r_n(x) = q_n(x)/p_n(x)$$ has finite variance and converges uniformly to 1 as $$n \to \infty$$. Then with $$\epsilon_n = r_n(x) -1$$, we obtain that for $$n$$ large enough,
 
 $$
 \begin{align*}
-    |\lambda_{opt,n} - 1| &= \left|\frac{E_{p_n}[ (\log (\epsilon_n +1) - \epsilon_n) \epsilon_n ]}{E_{p_n}[\epsilon_n^2 ]}\right|\\ 
+    |\lambda_{opt,n} - 1| &= \left| \frac{E_p[(\log (1+\epsilon(x))) \epsilon(x)]}{E_p[\epsilon(x)^2]} - \frac{E_p[\epsilon(x)^2]}{E_p[\epsilon(x)^2]}\right| \\
+    
+    \\& = \left|\frac{E_{p_n}[ (\log (\epsilon_n +1) - \epsilon_n) \epsilon_n ]}{E_{p_n}[\epsilon_n^2 ]}\right|\\ 
 
-&\leq \frac{E_{p_n} |(\log (\epsilon_n +1) - \epsilon_n) \epsilon_n| }{E_{p_n}[\epsilon_n^2 ]} \\
+% &\leq \frac{E_{p_n} |(\log (\epsilon_n +1) - \epsilon_n) \epsilon_n| }{E_{p_n}[\epsilon_n^2 ]} \\
 
 &\leq  \frac{E_{p_n} |C\epsilon_n^3| }{E_{p_n}[\epsilon_n^2 ]}  \\
 
