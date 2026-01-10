@@ -3,7 +3,7 @@ layout: about
 title: about
 giscus_comments: true
 permalink: /
-subtitle: Studying math at ETH Zurich, currently in SF after an exchange semester at UC Berkeley
+subtitle: Studying math at ETH Zurich
 profile:
   align: right
   image: prof_pic.jpg
