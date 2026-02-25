@@ -1,0 +1,35 @@
+<p class="friends-names" id="friends-list">
+  {%- for friend in site.data.friends.friends -%}
+  <span class="friend-item">
+    {%- if friend.name_parts -%}
+      {%- for part in friend.name_parts -%}
+        {%- if part.url -%}
+          <a href="{{ part.url }}">{{ part.text }}</a>
+        {%- else -%}
+          {{ part.text }}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- else -%}
+      <a href="{{ friend.url }}">{{ friend.name }}</a>
+    {%- endif -%}
+  </span>{% unless forloop.last %} {% endunless %}
+  {%- endfor -%}
+</p>
+
+<script>
+(function() {
+  const container = document.getElementById('friends-list');
+  if (!container) return;
+  const items = Array.from(container.querySelectorAll('.friend-item'));
+  if (items.length < 2) return;
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  container.innerHTML = '';
+  items.forEach((item, i) => {
+    container.appendChild(item);
+    if (i < items.length - 1) container.appendChild(document.createTextNode(' '));
+  });
+})();
+</script>

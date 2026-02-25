@@ -46,6 +46,14 @@ layout: default
             {%- include news.html %}
           {%- endif %}
 
+          <!-- Friends -->
+          {% if page.friends -%}
+            <div class="friends-section">
+              <h2>some of my very cool friends</h2>
+              {%- include friends.html %}
+            </div>
+          {%- endif %}
+
           <!-- Selected papers -->
           {% if page.selected_papers -%}
             <h2><a href="{{ '/works/' | relative_url }}" style="color: inherit;">some of my work</a></h2>

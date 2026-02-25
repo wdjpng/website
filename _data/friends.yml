@@ -1,0 +1,13 @@
+friends:
+  - name_parts:
+      - text: "Albert"
+        url: https://exr0n.com/
+      - text: " & "
+      - text: "Huxley"
+        url: https://www.huxley.sh
+  - name: Josia
+    url: https://www.linkedin.com/in/josia-john-9b677522a
+  - name: Leo
+    url: https://lnagel.net/
+  - name: Raphael
+    url: https://www.linkedin.com/in/rzumbrunn/
