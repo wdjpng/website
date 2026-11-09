@@ -1,23 +1,25 @@
 ---
 layout: page
+show_author: true
 title: getting startETH
 permalink: /gettingStartETH/
-description: An opinionated guide to life and studies at ETH, mainly for math majors
 nav: false
 nav_order: 4
 display_categories: [work, fun]
 horizontal: false
+seo_title: "Studying Mathematics at ETH Zurich | Lukas Münzel"
+description: "Lukas Münzel’s opinionated guide to studying mathematics at ETH Zurich, covering courses, study habits and student life."
 ---
 ### Common abbreviations and words
 Zentrum and Hönggerberg: ETH has two main campuses, one in the city center ("Zentrum") and one more modern one in a more rural area ("Hönggerberg")
 HG: *Hauptgebäude*, this big building in Zentrum where most math lectures are:
 <div style="text-align: center;">
-  <img src="https://lukasmuenzel.com/assets/img/getting_started/HG.png" alt="CAB Building" width="400">
+  <img src="https://munzel.com/assets/img/getting_started/HG.png" alt="CAB Building" width="400">
 </div>
 
 CAB: Building of the computer scientists in Zentrum:
 <div style="text-align: center;">
-  <img src="https://lukasmuenzel.com/assets/img/getting_started/CAB.png" alt="CAB Building" width="400">
+  <img src="https://munzel.com/assets/img/getting_started/CAB.png" alt="CAB Building" width="400">
 </div>
 CS: Computer Science aka Informatik
 vvz: *Vorlesungsverzeichnis*, which is the directory of all lectures offered at ETH. Website to explore cool course options
@@ -80,7 +82,7 @@ There are the following price reductions available for people under 25:
 One hike I can really, really recommend with this is the "5-Seen-Wanderung" in Pizol. The train takes just over an hour from Zurich and the views are absolutely stunning. Note that you do have to pay extra for the Gondolas, though there is a significant price reduction if you have a Halbtax or a Friends Day Pass.
 
 <div style="text-align: center;">
-  <img src="https://lukasmuenzel.com/assets/img/getting_started/pizol.jpg" alt="CAB Building" width="400">
+  <img src="https://munzel.com/assets/img/getting_started/pizol.jpg" alt="CAB Building" width="400">
 </div>
 
 

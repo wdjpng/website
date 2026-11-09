@@ -16,6 +16,9 @@
     <!-- Fallback to the original file -->
     <img 
       src="{{ include.path | relative_url }}"
+      decoding="async"
+      {% if include.loading %}loading="{{ include.loading }}"{% endif %}
+      {% if include.fetchpriority %}fetchpriority="{{ include.fetchpriority }}"{% endif %}
       {% if include.class %}class="{{ include.class }}"{% endif %}  
       {% if include.width %}width="{{ include.width }}"{% else %}width="auto"{% endif %} 
       {% if include.height %}height="{{ include.height }}"{% else %}height="auto"{% endif %} 

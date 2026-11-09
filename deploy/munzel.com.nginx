@@ -1,0 +1,90 @@
+# Certificate validation for the alternate domain.
+server {
+    listen 80;
+    listen [::]:80;
+    server_name munzel.com www.munzel.com;
+    location ^~ /.well-known/acme-challenge/ {
+        root /var/www/certbot;
+        default_type text/plain;
+        try_files $uri =404;
+    }
+    location = /qwen { return 301 https://munzel.com/qwen/; }
+    location ^~ /qwen/ { return 301 https://munzel.com$request_uri; }
+    location / {
+        return 301 https://munzel.com$request_uri;
+    }
+}
+# Serve the same website and preserve its existing protected locations.
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name munzel.com;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    ssl_certificate /etc/letsencrypt/live/munzel.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/munzel.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    # Qwen on-device application: static downloads only, no inference API.
+    location = /qwen { return 308 /qwen/; }
+    location ^~ /qwen/api/ { return 410; }
+    location ^~ /qwen/ {
+        alias /var/www/qwen/;
+        index index.html;
+        autoindex off;
+        add_header Cache-Control "no-cache";
+        add_header Cross-Origin-Opener-Policy same-origin always;
+        add_header Cross-Origin-Embedder-Policy require-corp always;
+        add_header Cross-Origin-Resource-Policy same-origin always;
+        add_header X-Content-Type-Options nosniff always;
+        add_header Referrer-Policy same-origin always;
+        add_header Content-Security-Policy "default-src 'self'; script-src 'self' 'wasm-unsafe-eval' blob:; worker-src 'self' blob:; style-src 'self' 'unsafe-inline'; connect-src 'self' blob:; img-src 'self' data:; base-uri 'self'; form-action 'self'; frame-ancestors 'none'" always;
+    }
+
+    # Primary public website. More-specific app and protected locations remain.
+    gzip_vary on;
+    gzip_min_length 1024;
+    gzip_types text/css application/javascript application/json application/xml text/xml image/svg+xml;
+
+    location = /bookshelf { return 301 https://munzel.com/books/$is_args$args; }
+    location = /bookshelf/ { return 301 https://munzel.com/books/$is_args$args; }
+    location / {
+        try_files $uri $uri/ =404;
+        autoindex on;
+    }
+    location /aline {
+        autoindex on;
+    }
+    location /rsi {
+        auth_basic "What's the Password?";
+        auth_basic_user_file /etc/nginx/users/rsi;
+        autoindex on;
+    }
+    location /howtolearn {
+        auth_basic "Blub";
+        auth_basic_user_file /etc/nginx/users/sebastian;
+        autoindex on;
+    }
+    location /bio {
+        autoindex on;
+    }
+    location /pfammatter {
+        auth_basic "Bitte geben Sie das via Teams geschickte Passwort hier ein und bestaunen Sie diese äusserst hässliche UI";
+        auth_basic_user_file /etc/nginx/users/pfammatter;
+        autoindex on;
+    }
+}
+
+# The www hostname always resolves to the primary non-www origin.
+server {
+    listen 443 ssl http2;
+    listen [::]:443 ssl http2;
+    server_name www.munzel.com;
+    ssl_certificate /etc/letsencrypt/live/munzel.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/munzel.com/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+    return 301 https://munzel.com$request_uri;
+}

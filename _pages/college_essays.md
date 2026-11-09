@@ -1,4 +1,6 @@
 ---
+noindex: true
+sitemap: false
 layout: page
 title: bookshelf
 permalink: /bookshelfy/

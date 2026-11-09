@@ -1,4 +1,6 @@
 ---
+noindex: true
+sitemap: false
 layout: post
 title:  a post with github metadata
 date: 2020-09-28 21:01:00

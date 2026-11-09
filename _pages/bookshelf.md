@@ -1,12 +1,13 @@
 ---
 layout: page
 title: bookshelf
-permalink: /bookshelf/
-description: Some of my favorite books
+permalink: /books/
 nav: true
 nav_order: 4
 display_categories: [work, fun]
 horizontal: false
+seo_title: "Favorite Books | Lukas Münzel"
+description: "Favorite books and reading recommendations from Lukas Münzel, with notes on science, philosophy, fiction and more."
 ---
 note: some reviews contain a near-minimal amount of spoilers to give an idea of what the book is about
 
@@ -79,10 +80,10 @@ Elements of Information Theory: Delightful textbook on information theory. One c
 I actually used two textbooks I really liked for linear algebra in addition to our course, namely the more rigorous Hoffman & Kunze and then the very nice Linear Algebra Done Right by Sheldon Axler, which I think is amazing in all respects other than I think that it hates determinants just a bit too much
 
 ## Lecture notes from ETH
-[Analysis I & II](https://lukasmuenzel.com/assets/pdf/textbooks/einsiedler_magnum_opos.pdf), German: An 800 page intro to real analysis / what we do in Switzerland instead of calc I and II. A delight (see [here](https://metaphor.ethz.ch/x/2022/hs/401-1261-07L/) and [here](https://metaphor.ethz.ch/x/2023/fs/401-1262-07L/) for excercises)
+[Analysis I & II](https://munzel.com/assets/pdf/textbooks/einsiedler_magnum_opos.pdf), German: An 800 page intro to real analysis / what we do in Switzerland instead of calc I and II. A delight (see [here](https://metaphor.ethz.ch/x/2022/hs/401-1261-07L/) and [here](https://metaphor.ethz.ch/x/2023/fs/401-1262-07L/) for excercises)
 
 Analysis IV (fourier theory and Hilbert spaces): Wonderful and beautifully formatted. Unfortunately I can't share it publicly. If you really want it, maybe very very politely email professor Mikaela Iacobelli. Excercises [here](https://metaphor.ethz.ch/x/2024/fs/401-2464-00L/)
 
-[Functional Analysis I](https://lukasmuenzel.com/assets/pdf/textbooks/functional_analysis_burger.pdf): Wonderful course, though note that the lecture notes were written by a student. Excercises [here](https://metaphor.ethz.ch/x/2024/hs/401-3461-00L/)
+[Functional Analysis I](https://munzel.com/assets/pdf/textbooks/functional_analysis_burger.pdf): Wonderful course, though note that the lecture notes were written by a student. Excercises [here](https://metaphor.ethz.ch/x/2024/hs/401-3461-00L/)
 
-[Mathematics of Signals, Systems, and Learnig](https://lukasmuenzel.com/assets/pdf/textbooks/msnl_bandeira.pdf): Great, very fun, and relatively small course covering various relatively disjoint topics
+[Mathematics of Signals, Systems, and Learnig](https://munzel.com/assets/pdf/textbooks/msnl_bandeira.pdf): Great, very fun, and relatively small course covering various relatively disjoint topics

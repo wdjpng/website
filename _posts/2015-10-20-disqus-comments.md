@@ -1,4 +1,6 @@
 ---
+noindex: true
+sitemap: false
 layout: post
 title: a post with disqus comments
 date: 2015-10-20 11:59:00-0400

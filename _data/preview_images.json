@@ -1,0 +1,72 @@
+{
+  "HG.png": {
+    "path": "/assets/img/publication_preview/HG-preview.webp",
+    "width": 400,
+    "height": 225
+  },
+  "airflow.png": {
+    "path": "/assets/img/publication_preview/airflow-preview.webp",
+    "width": 400,
+    "height": 282
+  },
+  "anki.png": {
+    "path": "/assets/img/publication_preview/anki-preview.webp",
+    "width": 249,
+    "height": 237
+  },
+  "berkeley.jpg": {
+    "path": "/assets/img/publication_preview/berkeley-preview.webp",
+    "width": 400,
+    "height": 225
+  },
+  "kl_divergence.png": {
+    "path": "/assets/img/publication_preview/kl_divergence-preview.webp",
+    "width": 400,
+    "height": 319
+  },
+  "lorien_icon.png": {
+    "path": "/assets/img/publication_preview/lorien_icon-preview.webp",
+    "width": 400,
+    "height": 400
+  },
+  "moore.png": {
+    "path": "/assets/img/publication_preview/moore-preview.webp",
+    "width": 400,
+    "height": 241
+  },
+  "neumann.gif": {
+    "path": "/assets/img/publication_preview/neumann.gif",
+    "width": 480,
+    "height": 480
+  },
+  "ocular_proof.jpg": {
+    "path": "/assets/img/publication_preview/ocular_proof-preview.webp",
+    "width": 310,
+    "height": 400
+  },
+  "preview_rsi_paper.jpg": {
+    "path": "/assets/img/publication_preview/preview_rsi_paper-preview.webp",
+    "width": 400,
+    "height": 215
+  },
+  "radiograph_automata.png": {
+    "path": "/assets/img/publication_preview/radiograph_automata-preview.webp",
+    "width": 400,
+    "height": 161
+  },
+  "sjfpreview.png": {
+    "path": "/assets/img/publication_preview/sjfpreview-preview.webp",
+    "width": 400,
+    "height": 308
+  },
+  "statistical_patterns.png": {
+    "path": "/assets/img/publication_preview/statistical_patterns-preview.webp",
+    "width": 400,
+    "height": 368
+  },
+  "thesis_randomized_linalg.png": {
+    "path": "/assets/img/publication_preview/thesis_randomized_linalg-preview.webp",
+    "width": 399,
+    "height": 400
+  }
+}

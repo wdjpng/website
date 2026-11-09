@@ -5,4 +5,6 @@ title: cv
 nav: true
 nav_order: 4
 cv_pdf: CV Lukas Muenzel.pdf
+seo_title: "CV | Lukas Münzel"
+description: "Lukas Münzel’s CV: mathematics at ETH Zurich, research experience, programming olympiads, projects and education."
 ---

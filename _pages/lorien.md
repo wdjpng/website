@@ -2,8 +2,9 @@
 layout: page
 title: Lorien
 permalink: /lorien/
-description: An app to prevent you from doomscrolling
 nav: false
+seo_title: "Lorien: An App to Stop Doomscrolling | Lukas Münzel"
+description: "Lorien is an iPhone app by Lukas Münzel that helps you pause before opening distracting apps and use your phone with intention."
 ---
 
 Lorien is a small side-project I built to prevent doomscrolling. The concept is super simple: Before opening Instagram or X, you have to enter the phrase *"I am unblocking for a specific reason that I will now speak out loud. This is a better use of my time than reading or journaling"*. Actually speak the reason out loud, at least in your internal monologue!

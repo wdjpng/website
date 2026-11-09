@@ -1,4 +1,6 @@
 ---
+noindex: true
+sitemap: false
 layout: page
 title: Hellö
 permalink: /callista/

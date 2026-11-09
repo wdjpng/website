@@ -2,20 +2,34 @@
 # Site settings
 # -----------------------------------------------------------------------------
 
-title: Lukas F. Münzel # the website title (if blank, full name will be used instead)
+title: Lukas Münzel # the website title (if blank, full name will be used instead)
 first_name: Lukas
 middle_name: F.
 last_name: Münzel
 email: lmuenzel@student.ethz.ch
-description: > # the ">" symbol means to ignore newlines until "footer_text:"
-  A math undergrad who wants to improve the world with ML
-keywords: lukas münzel, lukas munzel, personal website, blog, research, projects, machine learning, lukas florian munzel, lukas florian münzel, Lukas Münzel, IOI, berkeley, ethz, eth, schulman, blogpost, ml
+description: >-
+  Lukas Münzel, also known as Lukas Muenzel or Lukas Munzel. Founding team at Mirendil, ETH Zurich mathematics graduate, interested in AI for science.
+person_name: Lukas Münzel
+site_alternate_names:
+  - Lukas Muenzel
+  - Lukas Munzel
+  - munzel.com
+person_alternate_names:
+  - Lukas Muenzel
+  - Lukas Munzel
+  - Lukas F. Münzel
+  - Lukas Florian Münzel
+profile_image: /assets/img/prof_pic_20260924.jpg
+social_profiles:
+  - https://github.com/wdjpng
+  - https://www.linkedin.com/in/lukas-m%C3%BCnzel-64815619a
+  - https://twitter.com/lukasmunzel
 footer_text: 
 
 lang: en # the language of your site (for example: en, fr, cn, ru, etc.)
-icon: 🎓  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
+icon: favicon.png  # the emoji used as the favicon (alternatively, provide image name in /assets/img/)
 
-url: https://lukasmuenzel.com # the base hostname & protocol for your site
+url: https://munzel.com # the base hostname & protocol for your site
 baseurl:  # the subpath of your site, e.g. /blog/
 last_updated: false # set to true if you want to display last updated in the footer
 impressum_path:  # set to path to include impressum link in the footer, use the same path as permalink in a page, helps to conform with EU GDPR
@@ -58,7 +72,7 @@ max_width: 800px
 # Display links to the page with a preview object on social media.
 serve_og_meta: true # Include Open Graph meta tags in the HTML head
 serve_schema_org: true # Include Schema.org in the HTML head
-og_image: # The site-wide (default for all links) Open Graph preview image
+og_image: /assets/img/prof_pic_20260924.jpg
 
 # -----------------------------------------------------------------------------
 # Social integration
@@ -189,6 +203,17 @@ exclude:
   - Gemfile
   - Gemfile.lock
   - vendor
+  - deploy
+  - publish.sh
+  - serve.sh
+  - README.md
+  - CONTRIBUTING.md
+  - Dockerfile
+  - docker-compose.yml
+  - docker-local.yml
+  - package.json
+  - package-lock.json
+  - rubygems-update-3.4.13.gem
 keep_files:
   - CNAME
   - .nojekyll

@@ -65,7 +65,7 @@
       year: 2025
       description:
         - Proved optimality of the KL divergence estimator introduced by John Schulman that is used in PPO and GRPO
-        - 'Blogpost: <a href="https://lukasmuenzel.com/kl_estimator">A small observation on Schulmann''s KL divergence estimator</a>'
+        - 'Blogpost: <a href="https://munzel.com/kl_estimator">A small observation on Schulmann''s KL divergence estimator</a>'
     - title: Maturitätszeugnis / Swiss high school diploma
       institution: Gymnasium Bäumlihof, Basel
       year: 2022
@@ -84,7 +84,7 @@
       description:
         # - Only Swiss and one of thirty international students selected for the Research Science Institute 2021
         - Designed, programmed and conducted experiments to demonstrate the feasibility of a supplemental approach to training artificial neural networks under supervision of <a href="https://lizhongzheng.mit.edu/">Prof. Lizhong Zheng</a>
-        - Click <a href="https://drive.google.com/file/d/1qCjJuWBR_enKjlXeF7MT5NESa2wSQipd/view">here</a> for a presentation recording and <a href="https://lukasmuenzel.com/assets/pdf/RSI_paper.pdf">here</a> for the report
+        - Click <a href="https://drive.google.com/file/d/1qCjJuWBR_enKjlXeF7MT5NESa2wSQipd/view">here</a> for a presentation recording and <a href="https://munzel.com/assets/pdf/RSI_paper.pdf">here</a> for the report
     - title: Eidgenössische Technische Hochschule (ETH), Zurich, Switzerland
       institution: Eight week full-time internship under supervision of <a href="https://ifd.ethz.ch/people/person-detail.pjenny.html">Prof. Patrick Jenny</a>
       year: Jan - Mar 2021

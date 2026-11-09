@@ -66,11 +66,11 @@ In our setup, we instead observe pulsating behavior: The bar is overcrowded in o
 
 <div style="text-align: center;">
   <video width="70%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/simulation1.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/simulation1.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
-  <img src="https://hackmd.io/_uploads/rJI9TwBVgx.png" alt="attendance" style="height: 240px; margin-right: 10px;"><img src="https://lukasmuenzel.com/assets/img/pagapic.png" alt="strategy distribution" style="height: 240px;">
+  <img src="https://hackmd.io/_uploads/rJI9TwBVgx.png" alt="attendance" style="height: 240px; margin-right: 10px;"><img src="https://munzel.com/assets/img/pagapic.png" alt="strategy distribution" style="height: 240px;">
   </div>
   <p><em>Two simple strategies are enough for the attendance rate to stay around 60%. (T=0.0, R=0.0)</em></p>
 </div>
@@ -79,7 +79,7 @@ When we introduce more strategies, an interesting phenomenon emerges: The random
 <!-- %TODO: maybe cite figures because we have more than one figure supporitng this claim -->
 <div style="text-align: center;">
   <video width="70%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/simulation2.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/simulation2.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
@@ -93,7 +93,7 @@ Removing the random strategy results in an equilibrium of multiple strategies co
 
 <div style="text-align: center;">
   <video width="70%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/simulation3.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/simulation3.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
@@ -108,7 +108,7 @@ As the retention rate and temperature are increased, players no longer immediate
 
 <div style="text-align: center;">
   <video width="70%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/simulation4.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/simulation4.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
@@ -123,7 +123,7 @@ Even though we have much more stable behaviour with $$T=1.0$$ and $$R=0.9$$, the
 
 <div style="text-align: center;">
   <video width="70%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/simulation5.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/simulation5.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
@@ -159,7 +159,7 @@ We can observe that we get some combination of diffusion with some sort of conve
 We also include a plot the entropy of the distribution of the $$p_k$$ over time for different values of $$\delta$$:
 
 <div style="text-align: center;">
-  <img src="https://lukasmuenzel.com/assets/img/entropy_vs_iteration_bimodal.png" alt="Evolution of entropy for different values of delta" width="70%">
+  <img src="https://munzel.com/assets/img/entropy_vs_iteration_bimodal.png" alt="Evolution of entropy for different values of delta" width="70%">
   <p><em>Evolution of entropy for various values of delta</em></p>
 </div>
 
@@ -171,11 +171,11 @@ We see that we get some form of convergence to the Nash equilibrium when doing l
   
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
   <video width="140%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/histogram_local_1k_bimodal.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/histogram_local_1k_bimodal.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <video width="140%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/histogram_global_1k_bimodal.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/histogram_global_1k_bimodal.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   </div>
@@ -188,11 +188,11 @@ We see that we get some form of convergence to the Nash equilibrium when doing l
   
   <div style="display: flex; justify-content: center; align-items: flex-start; gap: 20px;">
   <video width="140%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/histogram_local_1k_uniform.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/histogram_local_1k_uniform.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   <video width="140%" controls>
-    <source src="https://lukasmuenzel.com/assets/vids/histogram_global_1k_uniform.mp4" type="video/mp4">
+    <source src="https://munzel.com/assets/vids/histogram_global_1k_uniform.mp4" type="video/mp4">
     Your browser does not support the video tag.
   </video>
   </div>
@@ -209,7 +209,7 @@ On the other hand, when doing local updates, there is a bias towards the mean be
 We also quickly verify that the mean p does in fact eventually hover around $$0.6$$ even when the initial distribution is uniform:
 
 <div style="text-align: center;">
-  <img src="https://lukasmuenzel.com/assets/img/p_mean_comparison_uniform-1400.webp" alt="attendance" style="height: 280px; margin-right: 10px;">
+  <img src="https://munzel.com/assets/img/p_mean_comparison_uniform-1400.webp" alt="attendance" style="height: 280px; margin-right: 10px;">
   <p><em>Average attendance over time with local and global update rule</em></p>
 </div>
 

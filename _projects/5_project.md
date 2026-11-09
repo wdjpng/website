@@ -1,4 +1,6 @@
 ---
+noindex: true
+sitemap: false
 layout: page
 title: project 5
 description: a project with a background image

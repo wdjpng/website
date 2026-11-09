@@ -1,12 +1,13 @@
 ---
 layout: about
 title: about
+seo_title: "Lukas Münzel | AI for Science & Mathematics"
 giscus_comments: true
 permalink: /
-subtitle: Studying math at ETH Zurich
+subtitle: Founding team @ Mirendil | math @ ETH Zurich
 profile:
   align: right
-  image: prof_pic.jpg
+  image: prof_pic_20260924.jpg
   image_circular: false # crops the image to make it circular
 news: false  # includes a list of news items
 selected_papers: true # includes a list of papers marked as "selected={true}"
@@ -16,7 +17,7 @@ social: true  # includes social icons at the bottom of the page
 
 *Hi there!*
 
-I want to have as much positive impact as I can. 
+I want to have as much positive impact as I can.
 
 ###### Axioms:
 1. We will with high probability achieve AGI [^AGI] in my lifetime
@@ -35,14 +36,17 @@ Cheers,
 
 Lukas
 
-PS: [Here](https://lukasmuenzel.com/questions/) some of the questions I am currently wondering about
+PS: [Here](https://munzel.com/questions/) some of the questions I was wondering about last year.
 
 ***
-Short summary of my CV:
-* In 2021, I had the pleasure of participating in the [Research Science Institute](https://www.cee.org/programs/research-science-institute), a six-week research program held at MIT with amazing people from all over the world
-* I participated in the Informatics Olympiad, being one of the four people to represent Switzerland internationally in 2020 and 2022 respectively. I also qualified for the final rounds of the Swiss Biology and Physics Olympiad
+### Background
+
+A short summary of my [CV](/cv/):
+* Joined [Mirendil](https://mirendil.com)
+* Finished my math undergrad at ETH Zurich
+* Before that had fun doing olympiads (informatics and a bit of physics & bio). I can highly recommend [RSI](https://en.wikipedia.org/wiki/Research_Science_Institute)
 
 
 ***
 
-[^AGI]: a system that can completely autonomously do any task John von Neumann could complete given a blackboard, a computer, and ten years 
+[^AGI]: a system that can completely autonomously do any task John von Neumann could complete given a blackboard, a computer, and ten years

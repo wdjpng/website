@@ -1,11 +1,13 @@
 ---
 layout: page
+show_author: true
 title: questions
 permalink: /questions/
-description: 
 nav: false
 nav_order: 4
 horizontal: false
+seo_title: "Questions About AI for Science | Lukas Münzel"
+description: "Open questions from Lukas Münzel about AI for science, automating research and making scientific progress useful to society."
 ---
 ## Open questions
 1. Is it too early to begin working on automating scientific research right now? I would suppose that 80% of scaffolding and duct-taping developed now will cease to be useful three model generations down the line. On the other hand, it really matters to be well-positioned when the time is ripe

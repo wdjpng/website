@@ -1,12 +1,14 @@
 ---
 layout: page
+show_author: true
 title: A small observation on Schulmann's KL divergence estimator
 permalink: /kl_estimator/
 nav: false
 nav_order: 2
 display_categories: [work, fun]
 horizontal: false
-
+seo_title: "On Schulman’s KL Divergence Estimator | Lukas Münzel"
+description: "Lukas Münzel explores the variance of John Schulman’s KL divergence estimator, with a visualization and mathematical derivation."
 ---
 In 2020, John Schulman published a blog describing an estimator for the KL divergence that is now used in GRPO and variants of PPO.
 This estimator has parameter $\lambda$ that can be chosen freely. Schulman uses $\lambda=1$ because the estimator is then always non-negative.
@@ -25,7 +27,7 @@ This implies that for every $$\lambda \in \mathbb R$$, $$-\log r + \lambda (r-1)
 
 We let q be a unit gaussian and p a gaussian of standard deviation sigma and mean mu. On the left, we show which lambda minimizes the variance of the estimator. On the right, we show the variance of that estimator:
 
-<img src="https://lukasmuenzel.com/assets/img/kl_div.png" alt="Visualization of optimal lambda and resulting variance for KL estimator" style="width: 100%;">
+<img src="https://munzel.com/assets/img/kl_div.png" alt="Visualization of optimal lambda and resulting variance for KL estimator" style="width: 100%;">
 
 
 

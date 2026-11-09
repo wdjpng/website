@@ -26,7 +26,11 @@ layout: default
               {% include figure.html 
               path=profile_image_path 
               class=profile_image_class
-              alt=page.profile.image -%}
+              alt=site.person_name
+              width=1024
+              height=1024
+              loading="eager"
+              fetchpriority="high" -%}
             {% endif -%}
             {%- if page.profile.address %}
             <div class="address">
