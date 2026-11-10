@@ -200,6 +200,7 @@ kramdown:
 include: ['_pages']
 exclude:
   - fidibus   # fidibus.munzel.com: deployed separately to Cloudflare Pages, see fidibus/README.md
+  - room      # munzel.com/room: walkable 3D room, published separately with room/deploy.sh (see room/README.md)
   - bin
   - Gemfile
   - Gemfile.lock

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
+  <meta name="theme-color" content="#141210" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Room · Lukas Münzel</title>
+  <meta name="description" content="Walk around my room in 3D." />
+  <meta property="og:title" content="My room, in 3D" />
+  <meta property="og:description" content="Walk around my room in your browser." />
+  <meta property="og:image" content="https://munzel.com/room/assets/poster-desktop.jpg" />
+  <meta property="og:url" content="https://munzel.com/room/" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <link rel="stylesheet" href="./src/style.css" />
+</head>
+<body>
+  <canvas id="c" tabindex="0" aria-label="3D view of the room"></canvas>
+
+  <div id="loader">
+    <img id="poster" alt="" decoding="async" />
+    <div class="loader-inner">
+      <div class="loader-title">Room</div>
+      <div class="bar"><div id="bar-fill"></div></div>
+      <div id="loader-text">Loading…</div>
+    </div>
+  </div>
+
+  <div id="hud" hidden>
+    <div id="hint"></div>
+    <div id="buttons">
+      <button id="btn-vr" class="hud-btn" style="display:none" title="View in a VR headset">VR</button>
+      <button id="btn-sit" class="hud-btn" hidden title="Sit down / stand up">Sit</button>
+      <button id="btn-gyro" class="hud-btn" hidden title="Look and walk by moving your phone">Motion</button>
+      <button id="btn-reset" class="hud-btn" title="Back to the start">Reset</button>
+      <a id="btn-home" class="hud-btn" href="/" title="munzel.com">munzel.com</a>
+    </div>
+  </div>
+
+  <div id="xr-overlay" hidden>
+    <div id="xr-hint">Walk around: the room moves with you</div>
+    <button id="xr-exit" class="hud-btn">Exit</button>
+  </div>
+
+  <div id="joystick" hidden aria-label="Walk"><div class="stick-arrows"></div><div id="joystick-knob"></div></div>
+
+  <noscript>This page needs JavaScript and WebGL.</noscript>
+  <script type="module" src="./src/main.js"></script>
+</body>
+</html>

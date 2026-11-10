@@ -1,0 +1,56 @@
+{
+ "eyeHeight": 1.6,
+ "start": {
+  "x": 0.25,
+  "z": 0.45,
+  "yaw": 0.5028432109278609,
+  "pitch": -0.12
+ },
+ "room": {
+  "min": [
+   -1.86,
+   0,
+   -2.77
+  ],
+  "max": [
+   1.85,
+   2.82,
+   0.84
+  ]
+ },
+ "splats": {
+  "mobile": {
+   "file": "room-mobile.sog",
+   "bytes": 0
+  },
+  "high": {
+   "file": "room-high.sog",
+   "bytes": 0,
+   "ext": true
+  }
+ },
+ "splatOffset": [
+  0,
+  1.41,
+  -0.965
+ ],
+ "exterior": {
+  "file": "exterior.jpg",
+  "center": [
+   -0.5,
+   0.3,
+   1.6
+  ],
+  "radius": 50.0,
+  "lon_half_deg": 100,
+  "lat_min_deg": -89.84375,
+  "lat_max_deg": 89.84375,
+  "portal": [
+   -1.885,
+   -0.45,
+   0.8,
+   1.05,
+   2.6
+  ]
+ }
+}
