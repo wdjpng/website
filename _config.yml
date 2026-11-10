@@ -199,6 +199,7 @@ kramdown:
 # Includes & excludes
 include: ['_pages']
 exclude:
+  - fidibus   # fidibus.munzel.com: deployed separately to Cloudflare Pages, see fidibus/README.md
   - bin
   - Gemfile
   - Gemfile.lock

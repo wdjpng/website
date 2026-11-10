@@ -1,0 +1,269 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fidibus · Das Papiertheater</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,700;1,500&family=IM+Fell+English+SC&display=swap" rel="stylesheet">
+<style>
+:root{--kraft:#c9a874;--kraft-d:#a8844f;--velvet:#7d1620;--velvet-d:#4a0910;--gold:#d4ae5c;--ink:#2b1a10}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:#1b120d;color:#f3e6c8;font-family:'Cormorant Garamond',Georgia,serif;overflow-x:hidden;
+  background-image:radial-gradient(ellipse at 50% 30%,#4a3020 0%,#1b120d 65%);transition:background .1s}
+/* house lights */
+#house{position:fixed;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity 2.2s ease;z-index:5}
+body.dark #house{opacity:.82}
+body.dark .theater,body.dark .stage{z-index:6}
+.repertoire{transition:opacity 2s}body.dark .repertoire{opacity:.18}body.dark .repertoire:hover{opacity:1}
+header{text-align:center;padding:18px 0 4px;letter-spacing:.35em;font-family:'IM Fell English SC',serif;color:var(--gold);font-size:14px;opacity:.85}
+header b{display:block;font-size:12px;letter-spacing:.2em;color:#b99a6d;font-weight:400}
+
+.wrap{position:relative;z-index:6;width:min(1180px,96vw,calc((100vh - 290px) * 1.47));margin:0 auto}
+.theater{position:relative;aspect-ratio:1000/680;width:100%;user-select:none}
+.stage{position:absolute;left:9%;right:9%;top:14%;bottom:11.8%;overflow:hidden;background:#0b0705;perspective:900px}
+
+/* painted backdrops (Prospekte) hanging from the fly loft */
+.flat{position:absolute;inset:0;background-size:cover;background-position:center;transform:translateY(-108%);
+  transition:transform 1.5s cubic-bezier(.55,.05,.35,1);filter:saturate(1.05) contrast(1.02)}
+.flat::after{content:"";position:absolute;inset:0;background:
+  linear-gradient(to bottom,rgba(0,0,0,.35),transparent 18%,transparent 75%,rgba(0,0,0,.55)),
+  url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='.18'/%3E%3C/svg%3E")}
+.flat.in{transform:translateY(0);animation:sway 7s ease-in-out 1.5s infinite}
+.flat.gone{transform:translateY(-108%)}
+@keyframes sway{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-3px) rotate(.12deg)}}
+/* bar that holds the flat */
+.flat::before{content:"";position:absolute;left:-2%;right:-2%;top:-6px;height:10px;background:#3a2414;z-index:2}
+
+video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;opacity:0;transition:opacity 2s ease}
+.playing video{opacity:1}
+
+/* side wings (Kulissen) cut from paper; parallax on mouse */
+.wing{position:absolute;bottom:-2%;height:104%;width:13%;z-index:3;transition:transform .4s ease-out;pointer-events:none;filter:drop-shadow(0 0 8px rgba(0,0,0,.6))}
+.wing.l{left:-3%}.wing.r{right:-3%;transform:scaleX(-1)}
+.playing .wing{opacity:.97}
+
+/* title banner lowered on strings */
+.banner{position:absolute;left:50%;top:0;z-index:4;width:min(54%,440px);transform:translate(-50%,-130%);
+  transition:transform 1.1s cubic-bezier(.4,1.4,.5,1)}
+.banner.down{transform:translate(-50%,22%)}
+.banner .strings{position:absolute;left:12%;right:12%;top:-300px;height:300px;border-left:1px solid #d8c7a3;border-right:1px solid #d8c7a3;opacity:.7}
+.banner .card{background:#efe2c4;color:var(--ink);padding:16px 22px 14px;text-align:center;
+  box-shadow:0 14px 30px rgba(0,0,0,.55);clip-path:polygon(0 0,100% 0,100% 82%,93% 100%,7% 100%,0 82%);
+  background-image:repeating-linear-gradient(0deg,transparent 0 3px,rgba(120,80,30,.04) 3px 4px)}
+.card small{font-family:'IM Fell English SC',serif;letter-spacing:.25em;font-size:12px;color:#8a5a2b}
+.card h1{margin:2px 0 0;font-size:clamp(24px,3.6vw,44px);line-height:1;font-weight:700}
+.card p{margin:6px 0 10px;font-style:italic;font-size:16px;color:#5e4024}
+.card button{font:inherit;font-family:'IM Fell English SC',serif;font-size:17px;letter-spacing:.12em;
+  background:var(--velvet);color:#f6e7c6;border:0;padding:7px 18px 8px;cursor:pointer;border-radius:2px;
+  box-shadow:inset 0 0 0 2px var(--gold),0 3px 0 #3a0a0e}
+.card button:hover{background:#9b1c28}
+
+/* curtains */
+.curtain{position:absolute;top:0;bottom:0;width:51%;z-index:5;transition:transform 1.4s cubic-bezier(.6,0,.3,1);
+  background:
+    linear-gradient(to bottom,transparent 85%,rgba(0,0,0,.35)),
+    repeating-linear-gradient(90deg,var(--velvet-d) 0,var(--velvet) 3%,#a3212e 5%,var(--velvet) 7%,var(--velvet-d) 10%);
+  box-shadow:inset 0 -20px 30px rgba(0,0,0,.5)}
+.curtain.l{left:0;transform-origin:left top}
+.curtain.r{right:0;transform-origin:right top}
+.curtain::after{content:"";position:absolute;bottom:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#8d6b2a,var(--gold),#8d6b2a)}
+.open .curtain.l{transform:translateX(-90%) scaleX(.45) skewY(2deg)}
+.open .curtain.r{transform:translateX(90%) scaleX(.45) skewY(-2deg)}
+.intermission .curtain.l{transform:translateX(-55%) scaleX(.7)}
+.intermission .curtain.r{transform:translateX(55%) scaleX(.7)}
+.valance{position:absolute;left:0;right:0;top:0;height:11%;z-index:6;
+  background:repeating-linear-gradient(90deg,#5c0d16 0,#8b1a25 2.5%,#5c0d16 5%);
+  -webkit-mask:radial-gradient(circle at 50% 0,#000 70%,transparent 71%) 0 0/5% 100%,linear-gradient(#000,#000) 0 0/100% 55% no-repeat;
+          mask:radial-gradient(circle at 50% 0,#000 70%,transparent 71%) 0 0/5% 100%,linear-gradient(#000,#000) 0 0/100% 55% no-repeat}
+
+.sign{position:absolute;left:50%;top:0;z-index:7;transform:translate(-50%,-140%) rotate(0);transform-origin:50% -200px;
+  background:#efe2c4;color:var(--velvet);font-family:'IM Fell English SC',serif;font-size:clamp(20px,3vw,36px);letter-spacing:.3em;
+  padding:6px 18px 6px 26px;border:3px double var(--velvet);transition:transform .9s cubic-bezier(.4,1.6,.5,1)}
+.sign.down{transform:translate(-50%,120%);animation:swing 3s ease-in-out .9s infinite}
+@keyframes swing{0%,100%{rotate:-2deg}50%{rotate:2deg}}
+
+/* proscenium frame */
+.frame{position:absolute;inset:0;pointer-events:none;z-index:8;width:100%;height:100%}
+
+/* footlights = timeline */
+.ramp{position:absolute;left:10%;right:10%;top:88.6%;height:5%;z-index:9;display:flex;justify-content:space-between;align-items:flex-start;padding:0 1%}
+.lamp{position:relative;flex:1;height:100%;cursor:pointer;display:flex;justify-content:center}
+.lamp i{display:block;width:clamp(8px,1.2vw,14px);aspect-ratio:2/1;border-radius:14px 14px 0 0;margin-top:2px;
+  background:#4b3b2a;box-shadow:inset 0 2px 2px rgba(255,255,255,.15);transition:background .4s,box-shadow .4s}
+.lamp.on i{background:#ffe6a0;box-shadow:0 0 6px 2px #ffcf6a,0 -8px 26px 6px rgba(255,190,90,.45)}
+.lamp.half i{background:#c79a52;box-shadow:0 0 4px 1px rgba(255,180,80,.6)}
+.lamp:hover i{background:#fff;box-shadow:0 0 10px 3px #fff}
+.lamp .tip{position:absolute;top:120%;font-size:13px;color:#e6cf9e;opacity:0;transition:opacity .2s;white-space:nowrap;font-family:'IM Fell English SC',serif}
+.lamp:hover .tip{opacity:1}
+.clock{position:absolute;right:10.5%;top:95%;z-index:9;font-family:'IM Fell English SC',serif;color:#b99a6d;font-size:14px;letter-spacing:.1em}
+.hint{position:absolute;left:10.5%;top:95%;z-index:9;font-size:14px;color:#8d7453;font-style:italic}
+
+/* the rope with hanging tags = the repertoire */
+.repertoire{position:relative;z-index:4;margin-top:6px;overflow-x:auto;overflow-y:visible;padding:0 4vw 30px;scrollbar-width:thin;scrollbar-color:#5a412c transparent}
+.rope-line{display:flex;gap:6px;align-items:flex-start;min-width:max-content;position:relative;padding-top:10px;
+  background:linear-gradient(#8a6a44,#5c4128) 0 8px/100% 4px no-repeat}
+.group-label{flex:none;width:74px;margin:0 6px 0 22px;padding-top:34px;text-align:center;font-family:'IM Fell English SC',serif;font-size:13px;line-height:1.25;letter-spacing:.15em;color:var(--gold);opacity:.85}
+.group-label::before{content:"✦";display:block;margin-bottom:6px;color:#8a6a44}
+.tag{--r:0deg;position:relative;width:96px;padding-top:26px;cursor:pointer;transform-origin:50% 0;transform:rotate(var(--r));transition:transform .3s}
+.tag::before{content:"";position:absolute;left:50%;top:0;height:30px;border-left:1px solid #d9c9a6;opacity:.8}
+.tag:hover{animation:tagswing 1.2s ease-in-out}
+@keyframes tagswing{0%{transform:rotate(var(--r))}25%{transform:rotate(7deg)}55%{transform:rotate(-5deg)}80%{transform:rotate(2deg)}100%{transform:rotate(var(--r))}}
+.tag{filter:drop-shadow(0 6px 6px rgba(0,0,0,.5))}
+.tag .paper{background:var(--kraft);color:var(--ink);padding:5px 5px 6px;position:relative;
+  clip-path:polygon(18% 0,82% 0,100% 12%,100% 100%,0 100%,0 12%);
+  background-image:repeating-linear-gradient(8deg,transparent 0 5px,rgba(90,60,20,.06) 5px 6px)}
+.tag .paper::before{content:"";position:absolute;left:50%;top:4px;width:7px;height:7px;margin-left:-3.5px;border-radius:50%;background:#1b120d;box-shadow:0 0 0 2px #e9d9b4}
+.tag img{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;margin-top:13px;filter:sepia(.35);border:1px solid #6b4d2b}
+.tag b{display:block;font-size:14px;line-height:1.05;margin-top:4px;font-weight:700;min-height:2.1em}
+.tag span{font-size:12px;font-style:italic;color:#5e4024}
+.tag.current .paper{background:#efe2c4;outline:2px solid var(--velvet);outline-offset:-4px}
+.tag.c-stage{width:116px}.tag.c-vhs{width:84px}.tag.c-short,.tag.c-backstage{width:80px}
+</style>
+</head>
+<body>
+<div id="house"></div>
+<header>MÄRCHENTHEATER FIDIBUS<b>· das Papiertheater ·</b></header>
+
+<div class="wrap">
+  <div class="theater" id="theater">
+    <div class="stage" id="stage">
+      <div id="flats"></div>
+      <video id="v" playsinline preload="none"></video>
+      <svg class="wing l" viewBox="0 0 100 400" preserveAspectRatio="none"><path fill="#24341f" d="M0 0h55c-8 20 14 30 4 52 12 6 18 24 6 36 14 10 10 30-2 36 16 14 14 36-2 44 12 18 6 36-8 40 14 16 8 40-6 46 10 14 4 32-10 38 6 18 0 40-8 52 4 14 4 30 0 56H0z"/><path fill="#3b5530" d="M0 0h30c-6 30 12 50 0 80 10 30-6 60 4 96-10 30 6 70-6 110 6 40-4 80 0 114H0z"/></svg>
+      <svg class="wing r" viewBox="0 0 100 400" preserveAspectRatio="none"><path fill="#24341f" d="M0 0h55c-8 20 14 30 4 52 12 6 18 24 6 36 14 10 10 30-2 36 16 14 14 36-2 44 12 18 6 36-8 40 14 16 8 40-6 46 10 14 4 32-10 38 6 18 0 40-8 52 4 14 4 30 0 56H0z"/><path fill="#3b5530" d="M0 0h30c-6 30 12 50 0 80 10 30-6 60 4 96-10 30 6 70-6 110 6 40-4 80 0 114H0z"/></svg>
+      <div class="banner" id="banner"><div class="strings"></div><div class="card">
+        <small id="bSeason"></small><h1 id="bTitle"></h1><p id="bSub"></p>
+        <button id="go">▶ Vorhang auf</button></div></div>
+      <div class="curtain l"></div><div class="curtain r"></div>
+      <div class="valance"></div>
+      <div class="sign" id="sign">PAUSE</div>
+    </div>
+    <svg class="frame" viewBox="0 0 1000 680" preserveAspectRatio="none">
+      <defs>
+        <linearGradient id="g" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="#f0d68e"/><stop offset=".5" stop-color="#b8893a"/><stop offset="1" stop-color="#7a5520"/></linearGradient>
+        <pattern id="wall" width="40" height="40" patternUnits="userSpaceOnUse"><rect width="40" height="40" fill="#5b1018"/><path d="M20 4l4 8 8 1-6 6 2 8-8-4-8 4 2-8-6-6 8-1z" fill="#6d1620"/></pattern>
+      </defs>
+      <!-- outer frame with stage opening cut out (evenodd) -->
+      <path fill="url(#wall)" fill-rule="evenodd" d="M0 0H1000V680H0Z M90 95 H910 V600 H90Z"/>
+      <path fill="none" stroke="url(#g)" stroke-width="10" d="M85 90 H915 V605 H85Z"/>
+      <path fill="none" stroke="#3a0a0e" stroke-width="2" d="M78 83 H922 V612 H78Z"/>
+      <!-- columns -->
+      <g fill="url(#g)"><rect x="30" y="80" width="34" height="540" rx="4"/><rect x="936" y="80" width="34" height="540" rx="4"/></g>
+      <g fill="#7a5520" opacity=".55"><rect x="38" y="96" width="4" height="508"/><rect x="52" y="96" width="4" height="508"/><rect x="944" y="96" width="4" height="508"/><rect x="958" y="96" width="4" height="508"/></g>
+      <!-- pediment / cartouche -->
+      <path fill="url(#g)" d="M300 88 C340 30 420 18 500 16 C580 18 660 30 700 88 Z"/>
+      <path fill="#5b1018" d="M330 84 C370 40 430 30 500 28 C570 30 630 40 670 84 Z"/>
+      <text x="500" y="72" text-anchor="middle" font-family="IM Fell English SC,serif" font-size="38" letter-spacing="10" fill="url(#g)">FIDIBUS</text>
+      <!-- stage floor / apron -->
+      <path fill="#2a1a10" d="M60 600 H940 L980 680 H20Z"/>
+      <path fill="url(#g)" d="M60 600 H940 V606 H60Z"/>
+      <path fill="#1a100a" d="M70 606 H930 V640 H70Z" opacity=".7"/>
+    </svg>
+    <div class="ramp" id="ramp"></div>
+    <div class="hint" id="hint">Wählt ein Stück an der Leine ↓</div>
+    <div class="clock" id="clock"></div>
+  </div>
+
+  <div class="repertoire"><div class="rope-line" id="rail"></div></div>
+</div>
+
+<script type="module">
+import {loadCatalog, fmt, minutes, pos} from './shared.js';
+const $ = s => document.querySelector(s);
+const items = await loadCatalog();
+const stage = $('#stage'), v = $('#v'), flats = $('#flats'), banner = $('#banner'), sign = $('#sign');
+const wait = ms => new Promise(r => setTimeout(r, ms));
+let current = null, busy = false;
+
+// ---- the repertoire rope ----
+const groups = [['stage','Die Stücke'],['vhs','Das Bandarchiv'],['short','Kostproben'],['backstage','Hinter den Kulissen']];
+for (const [cat,label] of groups) {
+  $('#rail').insertAdjacentHTML('beforeend', `<div class="group-label">${label}</div>`);
+  for (const it of items.filter(i => i.category === cat)) {
+    const el = document.createElement('div');
+    el.className = 'tag c-' + cat; el.style.setProperty('--r', (Math.random()*6-3).toFixed(1)+'deg');
+    el.innerHTML = `<div class="paper"><img loading="lazy" src="${it.poster}" alt=""><b>${it.short}</b><span>${it.season && it.season!=='VHS-Archiv' ? it.season : minutes(it.duration)}</span></div>`;
+    el.onclick = () => select(it, el);
+    $('#rail').appendChild(el);
+  }
+}
+
+// ---- footlights ----
+const N = 28;
+for (let i = 0; i < N; i++) {
+  const l = document.createElement('div'); l.className = 'lamp'; l.innerHTML = '<i></i><span class="tip"></span>';
+  l.onclick = e => { e.stopPropagation(); if (!current) return; v.currentTime = current.duration * i / N; if (!stage.classList.contains('playing')) start(); };
+  l.onmouseenter = () => { if (current) l.querySelector('.tip').textContent = fmt(current.duration * i / N); };
+  $('#ramp').appendChild(l);
+}
+const lamps = [...document.querySelectorAll('.lamp')];
+function lightRamp() {
+  const d = v.duration || current?.duration || 1, f = (v.currentTime / d) * N;
+  lamps.forEach((l, i) => { l.classList.toggle('on', i < Math.floor(f)); l.classList.toggle('half', i === Math.floor(f)); });
+  $('#clock').textContent = current ? fmt(v.currentTime) + ' / ' + fmt(d) : '';
+}
+v.ontimeupdate = () => { lightRamp(); if (current) pos.set(current.id, v.currentTime); };
+
+// ---- stage machinery ----
+async function select(it, tagEl) {
+  if (busy || it === current) return; busy = true;
+  document.querySelectorAll('.tag').forEach(t => t.classList.toggle('current', t === tagEl));
+  v.pause(); document.body.classList.remove('dark'); sign.classList.remove('down');
+  stage.classList.remove('open','intermission');
+  banner.classList.remove('down');
+  await wait(1300);
+  stage.classList.remove('playing'); v.removeAttribute('src'); v.load();
+  // fly out old backdrop, lower the new one
+  flats.querySelectorAll('.flat').forEach(f => { f.classList.replace('in','gone'); setTimeout(() => f.remove(), 1600); });
+  const f = document.createElement('div'); f.className = 'flat'; f.style.backgroundImage = `url(${it.poster})`;
+  flats.appendChild(f); f.offsetWidth; f.classList.add('in');
+  current = it; v.currentTime = 0; lightRamp();
+  $('#bSeason').textContent = it.category === 'vhs' ? 'AUS DEM BANDARCHIV' : (it.season || 'FIDIBUS');
+  $('#bTitle').textContent = it.category === 'vhs' ? it.short : it.title.split('·')[0].trim();
+  $('#bSub').textContent = (it.category === 'vhs' ? 'Ein altes Videoband' : it.subtitle) + ' · ' + minutes(it.duration);
+  const resume = pos.get(it.id);
+  $('#go').textContent = resume > 30 ? '▶ Weiterspielen ab ' + fmt(resume) : '▶ Vorhang auf';
+  $('#hint').textContent = '';
+  await wait(1200);
+  stage.classList.add('open');
+  await wait(700);
+  banner.classList.add('down');
+  busy = false;
+}
+
+function start() {
+  if (!current) return;
+  banner.classList.remove('down'); sign.classList.remove('down');
+  stage.classList.remove('intermission'); stage.classList.add('open');
+  if (!v.src) { v.src = current.src; const r = pos.get(current.id); if (r > 30) v.currentTime = r; }
+  document.body.classList.add('dark');
+  stage.classList.add('playing');
+  v.play();
+}
+function intermission() {
+  v.pause(); document.body.classList.remove('dark');
+  stage.classList.add('intermission'); sign.textContent = 'PAUSE'; sign.classList.add('down');
+}
+v.onended = () => { stage.classList.remove('open','intermission'); sign.textContent = 'ENDE'; sign.classList.add('down'); document.body.classList.remove('dark'); };
+$('#go').onclick = e => { e.stopPropagation(); start(); };
+stage.onclick = () => { if (!current || busy || banner.classList.contains('down')) return; v.paused ? start() : intermission(); };
+addEventListener('keydown', e => {
+  if (!current) return;
+  if (e.code === 'Space') { e.preventDefault(); v.paused ? start() : intermission(); }
+  if (e.key === 'ArrowRight') v.currentTime += 10;
+  if (e.key === 'ArrowLeft') v.currentTime -= 10;
+  if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : $('#theater').requestFullscreen();
+});
+
+// paper-theatre depth: wings move against the mouse
+addEventListener('mousemove', e => {
+  const x = (e.clientX / innerWidth - .5);
+  document.querySelector('.wing.l').style.transform = `translateX(${x * -14}px)`;
+  document.querySelector('.wing.r').style.transform = `scaleX(-1) translateX(${x * -14}px)`;
+});
+lightRamp();
+</script>
+</body>
+</html>

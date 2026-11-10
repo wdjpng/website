@@ -1,0 +1,663 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2a1a0e">
+<title>Fidibus · Das Wohnzimmer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Permanent+Marker&family=Caveat:wght@500;700&family=Archivo+Black&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#2a1a0e;overscroll-behavior:none}
+body{font-family:Caveat,cursive;color:#222;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+
+/* The room is drawn on a fixed-size stage that is scaled to the screen.
+   Two layouts: landscape (desktop, iPad quer, iPhone quer) and portrait (iPhone/iPad hoch). */
+#vp{position:fixed;inset:0;overflow:hidden;contain:strict;transition:background-color 1s;
+  background:linear-gradient(transparent var(--floor,50%),#6f4527 var(--floor,50%)),
+    radial-gradient(circle at 25% 25%,#c9a46a 0 9%,transparent 10%) 0 0/34px 34px,
+    repeating-linear-gradient(90deg,#e6d3a8 0 11px,#dcc596 11px 17px)}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;}
+#stage.moving{transition:transform 1.6s cubic-bezier(.65,0,.25,1)}
+#stage{
+  background:
+    radial-gradient(circle at 25% 25%,#c9a46a 0 9%,transparent 10%) 0 0/70px 70px,
+    radial-gradient(circle at 75% 75%,#b88f55 0 6%,transparent 7%) 0 0/70px 70px,
+    repeating-linear-gradient(90deg,#e6d3a8 0 22px,#dcc596 22px 35px)}
+.L #stage{width:1440px;height:900px}
+.P #stage{width:820px;height:1480px}
+.floor{position:absolute;left:0;right:0;bottom:0;background:repeating-linear-gradient(90deg,#7a4e2c 0 120px,#6b4325 120px 122px,#80532f 122px 240px);box-shadow:inset 0 14px 20px rgba(0,0,0,.35)}
+.L .floor{top:790px}.P .floor{top:1440px}
+
+/* ---------- shelf ---------- */
+.shelf{position:absolute;z-index:2;background:#5b3a20;padding:14px 14px 0;border-radius:3px;
+  box-shadow:0 20px 40px rgba(0,0,0,.35),inset 0 0 0 4px #4a2e18;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 2px,transparent 2px 7px)}
+.L .shelf{left:44px;top:160px;width:560px}
+.P .shelf{left:60px;top:830px;width:700px}
+.board{display:flex;align-items:flex-end;gap:2px;height:206px;padding:0 8px;border-bottom:14px solid #7b522f;margin-bottom:14px;position:relative}
+.P .board{height:192px;margin-bottom:12px}
+.board::after{content:attr(data-label);position:absolute;right:6px;bottom:-14px;font:12px/14px 'Archivo Black',sans-serif;color:#d9b98a;letter-spacing:.08em}
+.spine{position:relative;width:26px;height:182px;cursor:pointer;transition:transform .25s;flex:none}
+.P .spine{width:30px}
+@media (hover:hover){.spine:hover{transform:translateY(-14px)}}
+.spine.out{visibility:hidden}
+.spine.gap{width:0;margin:0 -1px}
+/* faces shared by the shelf spine and the 3D cassette's back */
+.sp{position:absolute;inset:0;border-radius:2px 2px 0 0;overflow:hidden}
+.sp .txt{position:absolute;inset:6px 2px;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap}
+.sp .txt span{flex:0 1 auto;min-height:0;overflow:hidden;text-overflow:ellipsis}
+.sp .txt small{flex:none;margin-top:auto}
+.sp.print{background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 20%,transparent 80%,rgba(0,0,0,.3)),var(--c)}
+.sp.print .txt{color:#fff8e1;font:12px 'Archivo Black',sans-serif}
+.sp.print .txt small{font:9px 'Archivo Black';opacity:.8;letter-spacing:.2em}
+.sp.bare{background:linear-gradient(90deg,#000,#232323 25%,#1a1a1a 75%,#000)}
+.sp.bare .sticker{position:absolute;left:3px;right:3px;top:9%;bottom:8%;background:var(--c,#f4f1e6);border-radius:1px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sp.bare .txt{inset:11% 3px 10%;color:#1d2a6b;font:700 16px/1 Caveat,cursive}
+.sp.bare .txt s{flex:none;color:#777;font:500 12px Caveat;text-decoration-thickness:1.5px}
+.sp.bare.marker .txt span{font:11px 'Permanent Marker',cursive;color:#111}
+.spine .rew{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#ffd31a;color:#c00;font:bold 10px/16px sans-serif;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.5);z-index:2}
+.postit{position:absolute;z-index:3;width:190px;padding:10px 12px;background:#fff59b;transform:rotate(-4deg);box-shadow:0 6px 12px rgba(0,0,0,.2);font:700 24px/1.05 Caveat;color:#283a8a}
+.postit small{display:block;font-size:17px;font-weight:500;color:#555;margin-top:4px}
+.L .postit{left:54px;top:62px}.P .postit{left:560px;top:780px;transform:rotate(5deg)}
+
+/* ---------- TV ---------- */
+.tv{position:absolute;z-index:3;background:linear-gradient(#3b3b3e,#232325);border-radius:26px;padding:34px 120px 36px 34px;
+  box-shadow:0 30px 50px rgba(0,0,0,.45),inset 0 2px 0 rgba(255,255,255,.15),inset 0 -6px 12px rgba(0,0,0,.6)}
+.L .tv{left:664px;top:84px;width:710px;height:568px}
+.P .tv{left:60px;top:40px;width:700px;height:560px}
+.tube{position:relative;width:100%;height:100%;border-radius:9%/12%;overflow:hidden;background:#0d0f0e;cursor:zoom-in;
+  box-shadow:inset 0 0 0 10px #151515,inset 0 0 40px 18px rgba(0,0,0,.9)}
+.tube video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;filter:saturate(1.15) contrast(1.08) blur(.35px)}
+.tube canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.tube.noise canvas{opacity:1}
+.tube.hidevid video{opacity:0}
+.tube .blue{position:absolute;inset:0;background:#1d2ccf;opacity:0}
+.tube.bluescreen .blue{opacity:1}
+.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+.glass{position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.14),transparent 45%),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+.tube.vhsfx .hs{position:absolute;left:0;right:0;bottom:0;height:3.5%;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 3px,transparent 3px 9px,rgba(0,0,0,.6) 9px 14px);animation:hs .18s steps(3) infinite;mix-blend-mode:screen}
+@keyframes hs{to{background-position:23px 0}}
+.tube.vhsfx video{animation:wob 6s infinite}
+@keyframes wob{0%,96%,100%{transform:none}97%{transform:translateX(3px) skewX(-1deg)}98%{transform:translateX(-2px)}}
+.tube.seek .bars{opacity:1}
+.bars{position:absolute;inset:0;opacity:0;pointer-events:none;background:
+  linear-gradient(transparent 0 30%,rgba(255,255,255,.55) 31%,rgba(0,0,0,.6) 33%,transparent 34%,transparent 64%,rgba(255,255,255,.5) 65%,rgba(0,0,0,.6) 67%,transparent 68%);
+  background-size:100% 200%;animation:bars .5s linear infinite}
+@keyframes bars{to{background-position:0 -200%}}
+.osd{position:absolute;inset:7% 8%;pointer-events:none;font:34px/1 VT323,monospace;color:#7dff8a;text-shadow:2px 2px 0 #000,0 0 6px rgba(120,255,140,.6);display:flex;flex-direction:column;justify-content:space-between}
+.osd .row{display:flex;justify-content:space-between;gap:12px}
+.osd .hint{font-size:26px;opacity:.85}
+.tube.off > *:not(.glass){opacity:0}
+.tube.poweron{animation:pon .5s ease-out}
+@keyframes pon{0%{clip-path:inset(49.5% 0 49.5% 0);filter:brightness(4)}60%{clip-path:inset(0 0 0 0);filter:brightness(2)}100%{filter:none}}
+.tube.poweroff{animation:poff .45s ease-in forwards}
+@keyframes poff{0%{clip-path:inset(0);filter:brightness(1)}50%{clip-path:inset(49.6% 0 49.6% 0);filter:brightness(3)}100%{clip-path:inset(49.6% 49.6% 49.6% 49.6%);filter:brightness(5)}}
+/* fullscreen: the tube (with its CRT look) fills the screen, a VCR-style bar appears on tap */
+.tube:fullscreen{border-radius:0;cursor:default;background:#000}
+.tube:-webkit-full-screen{border-radius:0;width:100%;height:100%;background:#000}
+.tube:fullscreen .glass{border-radius:0}
+.fsbar{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);display:none;max-width:96vw;gap:10px;align-items:center;padding:10px 14px;background:rgba(0,0,0,.6);border:2px solid #7dff8a;border-radius:6px;font:28px VT323,monospace;color:#7dff8a;z-index:5;transition:opacity .4s}
+body.zoomed .fsbar{display:flex;animation:fadein .6s 1.4s both}
+/* fullscreen: only the actual video — no scanlines, glass, noise band, wobble, search streaks, OSD or blur */
+body.zoomed .tube .scan,body.zoomed .tube .glass,body.zoomed .tube .hs,body.zoomed .tube .bars,body.zoomed .tube .osd,body.zoomed .tube .zoomhint{display:none}
+body.zoomed .tube video{filter:none;animation:none;transform:none}
+body.zoomed .tube{box-shadow:none;border-radius:0;background:#000}
+/* …and everything around the picture fades to black while the camera moves in */
+#stage>.floor,#stage>.postit,#stage>.shelf,#stage>.cabinet,.tvside,.brand{transition:opacity 1.2s}
+.tv,#stage,#vp{transition:background-color 1.2s,box-shadow 1.2s}
+body.zoomed #stage>.floor,body.zoomed #stage>.postit,body.zoomed #stage>.shelf,body.zoomed #stage>.cabinet,body.zoomed .tvside,body.zoomed .brand{opacity:0}
+body.zoomed #stage,body.zoomed #vp{background:#000}
+body.zoomed .tv{background:#000;box-shadow:none}
+@keyframes fadein{from{opacity:0}}
+body.zoomed.calm .fsbar{opacity:0;pointer-events:none}
+body.zoomed.calm{cursor:none}
+/* hint on the TV in the living room: you can step into the picture */
+.zoomhint{position:absolute;right:10%;bottom:9%;font:24px/1 VT323,monospace;color:#7dff8a;text-shadow:2px 2px 0 #000;opacity:0;pointer-events:none;transition:opacity .6s}
+.tube.hint .zoomhint{opacity:.9;animation:blink 1.2s steps(2) 3}
+@keyframes blink{50%{opacity:.25}}
+.tvicon{position:absolute;left:36px;top:8px;font:13px 'Archivo Black';color:#888;letter-spacing:.1em;cursor:pointer}
+.fsbar button{font:inherit;color:inherit;background:none;border:1px solid rgba(125,255,138,.5);border-radius:4px;min-width:52px;height:44px;cursor:pointer}
+.fsbar span{white-space:nowrap}
+.fsbar .prog{width:min(46vw,520px);height:14px;border:1px solid #7dff8a;position:relative;cursor:pointer;touch-action:none}
+.fsbar .prog i{position:absolute;left:0;top:0;bottom:0;background:#7dff8a;width:0}
+@media (max-width:600px){.fsbar{gap:6px;padding:6px 8px;font-size:22px}.fsbar button{min-width:40px;height:40px}.fsbar .prog{width:28vw}}
+.tvside{position:absolute;right:22px;top:46px;bottom:46px;width:72px;display:flex;flex-direction:column;align-items:center;gap:28px}
+.grille{width:100%;flex:1;background:repeating-linear-gradient(0deg,#151515 0 3px,#2d2d30 3px 6px);border-radius:4px}
+.knob{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#666,#1b1b1b 70%);box-shadow:0 2px 3px rgba(0,0,0,.6);cursor:ns-resize;position:relative;touch-action:none}
+.knob::after{content:"";position:absolute;left:47%;top:8%;width:6%;height:30%;background:#ccc;border-radius:2px}
+.power{width:60px;padding:8px 0;border-radius:3px;background:#111;color:#999;font:10px 'Archivo Black';text-align:center;cursor:pointer;letter-spacing:.1em;border:0}
+.power i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#400;margin-right:4px;vertical-align:1px}
+.on .power i{background:#f22;box-shadow:0 0 6px #f22}
+.brand{position:absolute;left:36px;bottom:9px;font:12px 'Archivo Black';letter-spacing:.35em;color:#888}
+
+/* ---------- cabinet + VCR ---------- */
+.cabinet{position:absolute;background:linear-gradient(#8a5a33,#6d4425);border-radius:3px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.L .cabinet{left:632px;top:652px;width:774px;height:150px}
+.P .cabinet{left:40px;top:600px;width:740px;height:170px}
+.vcr{position:absolute;left:24px;top:28px;width:590px;height:92px;z-index:7;border-radius:4px;color:#aaa;font:10px 'Archivo Black';letter-spacing:.08em;
+  background:linear-gradient(#2a2a2c,#121213);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 10px rgba(0,0,0,.5);
+  /* a real hole where the cassette goes in: things behind the front panel show through only here */
+  -webkit-mask:linear-gradient(#000 0 0) 22px 28px/var(--hw) var(--hh) no-repeat,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) 22px 28px/var(--hw) var(--hh) no-repeat exclude,linear-gradient(#000 0 0);--hw:190px;--hh:28px}
+.P .vcr{width:560px;top:36px}
+.vcr .bezel{position:absolute;left:16px;top:22px;width:202px;height:40px;border-radius:3px;box-shadow:inset 0 0 0 4px #0b0b0b,0 1px 0 rgba(255,255,255,.1)}
+.vcr .bezel::after{content:"";position:absolute;inset:4px;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+/* the inside of the machine + spring-loaded flap, sitting *behind* the front panel */
+.inside{position:absolute;z-index:5;left:46px;top:56px;width:190px;height:28px;background:linear-gradient(#000,#0b0b0c 70%,#161618);perspective:240px;overflow:hidden}
+.P .inside{top:64px}
+.flap{position:absolute;inset:1px 2px;background:linear-gradient(#2b2b2e,#18181a 70%,#101012);transform-origin:50% 0;transition:transform .25s cubic-bezier(.3,1.6,.5,1);box-shadow:inset 0 -2px 0 rgba(255,255,255,.05)}
+.flap::after{content:"VHS";position:absolute;right:8px;top:9px;font:9px 'Archivo Black';color:#555;letter-spacing:.1em}
+.flap.open{transform:rotateX(-82deg);transition:transform .18s ease-out}
+.vfd{position:absolute;left:236px;top:24px;width:150px;height:40px;background:#050806;border-radius:3px;font:30px/40px VT323;color:#5cf0d2;text-shadow:0 0 6px #2fd2b0;text-align:right;padding-right:8px}
+.vfd small{position:absolute;left:6px;top:3px;font:12px/1 VT323;color:#3cb39b}
+.vfd .cas-ico{position:absolute;left:6px;bottom:4px;font:12px/1 VT323;color:#3cb39b}
+.btns{position:absolute;right:12px;top:20px;display:grid;grid-template-columns:repeat(4,38px);gap:5px}
+.btns button{height:22px;border:0;border-radius:2px;background:linear-gradient(#4a4a4d,#2e2e30);color:#ddd;font-size:12px;cursor:pointer;box-shadow:0 2px 0 #000;touch-action:none}
+.btns button:active,.btns button.held{transform:translateY(2px);box-shadow:none}
+.btns button.rec{color:#f33}
+.vcr .lbl{position:absolute;left:22px;bottom:6px;font-size:9px;color:#777;letter-spacing:.3em}
+.vcrtop{position:absolute;left:24px;top:14px;width:590px;height:15px;z-index:7;background:linear-gradient(#45454a,#2c2c2f);clip-path:polygon(2.5% 0,97.5% 0,100% 100%,0 100%);box-shadow:inset 0 -1px 0 rgba(0,0,0,.6)}
+.vcrtop::after{content:"";position:absolute;left:30%;right:30%;top:4px;height:5px;background:repeating-linear-gradient(90deg,#1a1a1c 0 3px,transparent 3px 7px)}
+.P .vcr~.vcrtop,.P .vcrtop{top:22px;width:560px}
+.cabtop{position:absolute;left:-10px;right:-10px;top:-16px;height:17px;background:linear-gradient(#a06b3e,#8a5a33);clip-path:polygon(1.5% 0,98.5% 0,100% 100%,0 100%)}
+.vcr.thud,.vcrtop.thud{animation:thud .18s}
+@keyframes thud{50%{transform:translateY(1.5px)}}
+.remote{position:absolute;width:96px;height:132px;background:linear-gradient(#333,#1c1c1c);border-radius:10px 10px 16px 16px;padding:8px;transform:rotate(-8deg);box-shadow:0 8px 12px rgba(0,0,0,.5);display:grid;grid-template-columns:repeat(3,1fr);gap:4px;align-content:start;z-index:7}
+.L .remote{left:650px;top:10px}.P .remote{left:620px;top:20px}
+.remote button{height:20px;border:0;border-radius:6px;background:#555;color:#eee;font:13px VT323;cursor:pointer;padding:0}
+.remote button:active{background:#888}
+.remote .cap{grid-column:1/-1;font:8px 'Archivo Black';color:#888;text-align:center;letter-spacing:.15em;margin-bottom:2px}
+
+/* ---------- the 3D cassette ----------
+   A box (180 x 24 x 102) whose faces are sized by JS every frame. While it goes into the slot only the part
+   still outside is drawn: its far end sits flush with the front panel, so nothing needs to be clipped. */
+.air{position:absolute;inset:0;pointer-events:none;perspective:1500px;z-index:50}
+.cas{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;display:none}
+.cas>div{position:absolute;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.cas .back{box-shadow:inset 0 0 0 1px rgba(0,0,0,.6)}
+.cas .front{background:linear-gradient(#1c1c1e,#0d0d0e)}
+.cas .top{background:linear-gradient(to top,#232326,#151517);box-shadow:inset 0 -1px 0 rgba(255,255,255,.25)}
+.cas .top .in{position:absolute;left:0;right:0;bottom:0;height:102px}
+/* moulded plastic: fine ribs, the window with two reels, label recess near the spine */
+.cas .top .in::before{content:"";position:absolute;inset:0;background:
+   linear-gradient(to bottom,rgba(255,255,255,.07),transparent 30%),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
+.cas .top .ao{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0) 22px)}
+.cas .lab{position:absolute;left:12px;right:12px;bottom:8px;height:30px;background:var(--c,#f4f1e6);font:700 18px/30px Caveat;color:#1d2a6b;text-align:center;overflow:hidden;white-space:nowrap;padding:0 6px;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.cas .lab.print{font:11px/30px 'Archivo Black';color:#fff8e1}
+.cas .win{position:absolute;left:44px;right:44px;bottom:46px;height:34px;background:linear-gradient(rgba(90,70,50,.55),rgba(40,28,18,.85));border-radius:3px;box-shadow:inset 0 0 0 2px #050505,inset 0 6px 8px rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;padding:0 3px}
+.cas .win i{width:var(--r1,30px);height:var(--r1,30px);border-radius:50%;background:radial-gradient(circle,#e6e6e6 0 20%,#2e2016 22%,#4a3524 70%,#2e2016)}
+.cas .win i+i{width:var(--r2,14px);height:var(--r2,14px)}
+.cas .screw{position:absolute;width:5px;height:5px;border-radius:50%;background:#0a0a0a;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.cas .side{background:linear-gradient(#2a2a2d,#1b1b1d 45%,#0f0f10),repeating-linear-gradient(90deg,transparent 0 9px,rgba(0,0,0,.35) 9px 10px);background-blend-mode:multiply;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.cas .bottom{background:#0b0b0c}
+/* shadow the cassette throws on the VCR front, below the slot */
+.slotshadow{position:absolute;left:22px;top:54px;width:190px;height:16px;border-radius:50%;background:radial-gradient(ellipse at 50% 0,rgba(0,0,0,.85),transparent 70%);opacity:0;pointer-events:none;filter:blur(2px)}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);background:#fff59b;padding:6px 16px;font:700 22px Caveat;color:#283a8a;box-shadow:0 6px 12px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+</style>
+</head>
+<body class="L">
+<div id="vp"><div id="stage">
+  <div class="floor"></div>
+  <div class="postit">Fidibus-Bänder<small>bitte nicht überspielen!!</small></div>
+  <div class="shelf" id="shelf"></div>
+
+  <div class="tv" id="tv">
+    <div class="tube off" id="tube">
+      <video id="v" playsinline webkit-playsinline preload="none"></video>
+      <div class="blue"></div>
+      <canvas id="snow" width="160" height="120"></canvas>
+      <div class="bars"></div><div class="hs"></div>
+      <div class="scan"></div>
+      <div class="osd"><div class="row"><span id="osdL"></span><span id="osdR"></span></div><div class="row"><span id="osdB" class="hint"></span><span id="osdC"></span></div></div>
+      <div class="glass"></div>
+      <div class="zoomhint">⛶ ANTIPPEN = VOLLBILD</div>
+    </div>
+    <div class="tvside"><div class="knob" title="Lautstärke (ziehen)" id="vol"></div><div class="grille"></div><button class="power" id="pwr"><i></i>NETZ</button></div>
+    <div class="brand">FIDIBUS·COLOR 51</div>
+  </div>
+
+  <div class="cabinet" id="cab">
+    <div class="cabtop"></div><div class="vcrtop" id="vcrTop"></div>
+    <div class="inside" id="inside"><div class="flap" id="flap"></div></div>
+    <div class="vcr" id="vcr">
+      <div class="bezel"></div>
+      <div class="vfd" id="vfd"><small id="vfdS"></small>--:--</div>
+      <div class="btns">
+        <button data-k="eject" title="Auswerfen">⏏</button>
+        <button data-k="play" title="Wiedergabe">▶</button>
+        <button data-k="pause" title="Pause">❚❚</button>
+        <button data-k="stop" title="Stopp">■</button>
+        <button data-k="rew" title="Rückspulen (halten)">◀◀</button>
+        <button data-k="ff" title="Vorspulen (halten)">▶▶</button>
+        <button data-k="rec" class="rec" title="Aufnahme">●</button>
+        <button data-k="full" title="Vollbild">⛶</button>
+      </div>
+      <div class="lbl">VIDEO CASSETTE RECORDER · HQ</div>
+      <div class="slotshadow" id="slotShadow"></div>
+    </div>
+    <div class="remote" id="remote"><div class="cap">INDEX</div></div>
+  </div>
+
+  <div class="air" id="air"><div class="cas" id="cas">
+    <div class="back" id="casBack"></div><div class="front" id="casFront"></div>
+    <div class="top" id="casTop"><div class="in"><div class="win" id="casWin"><i></i><i></i></div><div class="lab" id="casLab"></div>
+      <div class="screw" style="left:8px;top:8px"></div><div class="screw" style="right:8px;top:8px"></div><div class="screw" style="left:86px;top:6px"></div></div><div class="ao" id="casAO"></div></div>
+    <div class="bottom" id="casBottom"></div><div class="side" id="casL"></div><div class="side" id="casR"></div>
+  </div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="fsbar" id="fsbar">
+        <button data-f="rew">◀◀</button><button data-f="pp">❚❚</button><button data-f="ff">▶▶</button>
+        <div class="prog" id="prog"><i></i></div><span id="fsTime">0:00</span><button data-f="exit" title="Zurück ins Wohnzimmer">✕</button>
+      </div>
+
+<script type="module">
+import {loadCatalog, fmt, pos} from './shared.js';
+const $ = s => document.querySelector(s);
+const SLOW = +new URLSearchParams(location.search).get('slow') || 1;
+if (new URLSearchParams(location.search).has('debug')) { window.__errs = []; addEventListener('error', e => __errs.push(e.message + ' @' + e.lineno)); addEventListener('unhandledrejection', e => __errs.push('rej ' + (e.reason?.stack || e.reason))); }   // ?slow=8 to study the animation
+const wait = ms => new Promise(r => setTimeout(r, ms * SLOW));
+const items = await loadCatalog();
+// what is actually on each tape (identified from the recordings); falls back to "Band NN"
+const tapes = await fetch('./tapes.json').then(r => r.ok ? r.json() : {}).catch(() => ({}));
+const v = $('#v'), tube = $('#tube'), shelf = $('#shelf'), stage = $('#stage');
+let loaded = null, loadedSpine = null, tvOn = false, seekTimer = null, busy = false, autoZoom = true;
+
+// ---------- fit the stage to any screen ----------
+let S = 1, zoomed = false;
+function fit() {
+  const w = document.documentElement.clientWidth, h = window.visualViewport?.height || document.documentElement.clientHeight;
+  if (!w || !h) return;
+  const portrait = w / h < .85;
+  document.body.classList.toggle('P', portrait); document.body.classList.toggle('L', !portrait);
+  const W = portrait ? 820 : 1440, H = portrait ? 1480 : 900;
+  S = Math.min(w / W, h / H);
+  stage.style.transform = `translate(${(w - W * S) / 2}px,${(h - H * S) / 2}px) scale(${S})`;
+  if (zoomed) {
+    // move the camera into the TV: the picture (not the whole tube) fills the screen, a sliver of
+    // curved glass and bezel stays visible at the edges where the aspect ratios differ
+    const tv = $('#tv'), tx = tv.offsetLeft + tube.offsetLeft, ty = tv.offsetTop + tube.offsetTop, tw = tube.offsetWidth, th = tube.offsetHeight;
+    const a = (v.videoWidth && v.videoHeight) ? v.videoWidth / v.videoHeight : 4 / 3;
+    const vw = tw / th > a ? th * a : tw, vh = tw / th > a ? th : tw / a;
+    const Z = Math.min(w / vw, h / vh) * 1.015;
+    stage.style.transform = `translate(${w / 2 - (tx + tw / 2) * Z}px,${h / 2 - (ty + th / 2) * Z}px) scale(${Z})`;
+  }
+  document.querySelector('#vp').style.setProperty('--floor', (h - H * S) / 2 + (portrait ? 1440 : 790) * S + 'px');  // continue the floor line into the letterbox
+}
+fit(); addEventListener('resize', fit); addEventListener('orientationchange', () => setTimeout(fit, 300));
+// a rect in stage coordinates (the stage is scaled)
+// a rect in stage coordinates, from the layout itself (immune to the stage's scale/zoom and its transitions)
+function sr(el) { let x = 0, y = 0, n = el; while (n && n !== stage) { x += n.offsetLeft; y += n.offsetTop; n = n.offsetParent; } return {x, y, w: el.offsetWidth, h: el.offsetHeight}; }
+
+// ---------- sound: synthesised mechanics (no files) ----------
+let ac = null; const muted = false;
+addEventListener('pointerdown', () => { if (!ac) { ac = new (window.AudioContext || window.webkitAudioContext)(); } if (ac.state === 'suspended') ac.resume(); }, {capture: true});
+function noise(dur) { const b = ac.createBuffer(1, ac.sampleRate * dur, ac.sampleRate), d = b.getChannelData(0); for (let i = 0; i < d.length; i++) d[i] = Math.random() * 2 - 1; const s = ac.createBufferSource(); s.buffer = b; return s; }
+function env(node, t0, a, peak, dur) { const g = ac.createGain(); g.gain.setValueAtTime(0, t0); g.gain.linearRampToValueAtTime(peak, t0 + a); g.gain.exponentialRampToValueAtTime(.0001, t0 + dur); node.connect(g); g.connect(ac.destination); return g; }
+const sfx = {
+  click(at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, n = noise(.03), f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 2600; n.connect(f); env(f, t, .002, .35, .03); n.start(t); },
+  slide(dur, at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, n = noise(dur), f = ac.createBiquadFilter(); f.type = 'bandpass'; f.frequency.value = 900; f.Q.value = .7; n.connect(f); env(f, t, dur * .3, .12, dur); n.start(t); },
+  motor(dur, at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, o = ac.createOscillator(), f = ac.createBiquadFilter(); o.type = 'sawtooth'; o.frequency.setValueAtTime(70, t); o.frequency.linearRampToValueAtTime(130, t + dur * .4); o.frequency.linearRampToValueAtTime(95, t + dur); f.type = 'lowpass'; f.frequency.value = 420; o.connect(f); env(f, t, .05, .09, dur); o.start(t); o.stop(t + dur + .05); const n = noise(dur), f2 = ac.createBiquadFilter(); f2.type = 'highpass'; f2.frequency.value = 3000; n.connect(f2); env(f2, t, .05, .02, dur); n.start(t); },
+  clunk(at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, o = ac.createOscillator(); o.frequency.setValueAtTime(120, t); o.frequency.exponentialRampToValueAtTime(45, t + .12); env(o, t, .003, .5, .18); o.start(t); o.stop(t + .2); const n = noise(.06), f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 1200; n.connect(f); env(f, t, .002, .3, .06); n.start(t); },
+  heads(at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, o = ac.createOscillator(), f = ac.createBiquadFilter(); o.type = 'triangle'; o.frequency.setValueAtTime(40, t); o.frequency.exponentialRampToValueAtTime(300, t + 1.1); f.type = 'lowpass'; f.frequency.value = 900; o.connect(f); env(f, t, .3, .05, 1.4); o.start(t); o.stop(t + 1.5); },
+  crt(at = 0) { if (!ac || muted) return; const t = ac.currentTime + at, n = noise(.25), f = ac.createBiquadFilter(); f.type = 'lowpass'; f.frequency.value = 400; n.connect(f); env(f, t, .005, .4, .25); n.start(t); const o = ac.createOscillator(); o.frequency.value = 15600; env(o, t, .2, .006, 3); o.start(t); o.stop(t + 3); },
+};
+
+// ---------- the shelf ----------
+const rnd = (id, n) => { let h = 0; for (const c of id + n) h = (h * 31 + c.charCodeAt(0)) >>> 0; return (h % 1000) / 1000; };
+const overwritten = ['Tatort','Derrick','Skispringen','Maus','Traumschiff','Formel 1','Silvester 89','Wetten dass'];
+const stickers = ['#f4f1e6','#f4f1e6','#fdf3b0','#d7ecf7','#f6d4d4','#f4f1e6'];
+const sleeves = {stage:['#7d1620','#1f4b3a','#2b3f7a','#8a5a12','#4b2a5e'], short:['#c0392b','#16697a','#a0522d','#3d5a80'], backstage:['#444','#5e503f','#2f3e46']};
+function look(it, i) {
+  if (it.category === 'vhs') {
+    const n = it.short.replace('Band ', ''), t = tapes[it.id];
+    const old = !t && rnd(it.id,'o') < .45 ? `<s>${overwritten[Math.floor(rnd(it.id,'t')*overwritten.length)]}</s>` : '';
+    const marker = rnd(it.id,'m') < .35;
+    const label = t ? t.label : marker ? `FIDIBUS ${n}` : (old ? `Fidibus ${n}` : `Fidibus – Band ${n}`);
+    return {cls: 'bare' + (marker ? ' marker' : ''), c: stickers[Math.floor(rnd(it.id,'c')*stickers.length)], label,
+      html: `<div class="sticker"></div><div class="txt">${old}<span>${label}</span></div>`};
+  }
+  const pal = sleeves[it.category], c = pal[i % pal.length];
+  const t = it.category === 'stage' ? it.title : it.title.split(' · ').reverse().join(' – ').replace('Die Schauspielerinnen und Schauspieler','Ensemble');
+  return {cls: 'print', c, label: t, html: `<div class="txt"><span>${t}</span>${it.category === 'stage' ? '<small>FIDIBUS</small>' : ''}</div>`};
+}
+for (const [cat, label] of [['stage','Stücke'],['vhs','Bänder'],['short','Kostproben']]) {
+  const b = document.createElement('div'); b.className = 'board'; b.dataset.label = label.toUpperCase();
+  const list = items.filter(i => cat === 'short' ? (i.category === 'short' || i.category === 'backstage') : i.category === cat);
+  list.forEach((it, i) => {
+    const L = look(it, i), el = document.createElement('div');
+    el.className = 'spine'; el.title = (it.play || it.title) + (it.note ? ' — ' + it.note : '');
+    el.innerHTML = `<div class="sp ${L.cls}" style="--c:${L.c}">${L.html}</div>`;
+    Object.assign(el, {_it: it, _look: L});
+    if (pos.get(it.id) > 30) el.insertAdjacentHTML('beforeend', '<div class="rew" title="Bitte zurückspulen!">↺</div>');
+    el.onclick = () => insert(el);
+    b.appendChild(el);
+  });
+  shelf.appendChild(b);
+}
+
+// ---------- snow ----------
+const cv = $('#snow'), cx = cv.getContext('2d'), img = cx.createImageData(160, 120);
+(function snow() {
+  if (tube.classList.contains('noise')) { for (let i = 0; i < img.data.length; i += 4) { const g = Math.random() * 255; img.data[i] = img.data[i+1] = img.data[i+2] = g; img.data[i+3] = 255; } cx.putImageData(img, 0, 0); }
+  requestAnimationFrame(snow);
+})();
+
+// ---------- OSD / VFD ----------
+let osdTimer;
+function osd(l, sticky) { $('#osdL').textContent = l; clearTimeout(osdTimer); if (!sticky) osdTimer = setTimeout(() => $('#osdL').textContent = '', 2500); }
+function vfd(txt, small = '') { $('#vfd').innerHTML = `<small>${small}</small>${txt}${loaded ? '<span class="cas-ico">▭</span>' : ''}`; }
+function counter() { const t = fmt(v.currentTime); return t.length > 5 ? t : '0:' + t.padStart(5, '0'); }
+v.ontimeupdate = () => {
+  if (!loaded) return;
+  vfd(counter(), v.paused ? 'II' : '▶ HQ'); pos.set(loaded.id, v.currentTime);
+  const d = v.duration || loaded.duration; $('#prog i').style.width = (v.currentTime / d * 100) + '%'; $('#fsTime').textContent = fmt(v.currentTime) + ' / ' + fmt(d);
+};
+
+async function power(on) {
+  if (on === tvOn) return; tvOn = on;
+  $('#tv').classList.toggle('on', on);
+  if (on) { sfx.crt(); tube.classList.remove('off','poweroff'); tube.classList.add('poweron'); await wait(500); tube.classList.remove('poweron'); if (!loaded) { tube.classList.add('bluescreen'); osd('AV  KEINE KASSETTE', true); } }
+  else { tube.classList.add('poweroff'); await wait(450); tube.classList.add('off'); v.pause(); }
+}
+$('#pwr').onclick = () => power(!tvOn);
+
+// ---------- cassette handling, in 3D ----------
+// Box: length L (x), thickness H (y), depth D (z). The label spine faces you. `e` = how much of the depth is
+// outside the machine; while inserting, the far end stays flush with the front panel (z = 0).
+const L = 180, H = 24, D = 102, cas = $('#cas'), air = $('#air');
+const F = {back: $('#casBack'), front: $('#casFront'), top: $('#casTop'), bottom: $('#casBottom'), l: $('#casL'), r: $('#casR')};
+const box = (el, w, h, tf) => { el.style.cssText = `width:${w}px;height:${h}px;left:${-w / 2}px;top:${-h / 2}px;transform:${tf}`; };
+let pose = null;
+function render(p) {
+  pose = p; if (window.__trace) window.__trace.push([performance.now(), p.x, p.y, p.z, p.rx, p.rz, p.e]); const e = Math.max(.5, p.e);
+  cas.style.transform = `translate3d(${p.x}px,${p.y}px,${p.z}px) rotateY(${p.ry || 0}deg) rotateX(${p.rx || 0}deg) rotateZ(${p.rz || 0}deg)`;
+  box(F.back, L, H, `translateZ(${e / 2}px)`);
+  box(F.front, L, H, `rotateY(180deg) translateZ(${e / 2}px)`);
+  box(F.top, L, e, `rotateX(90deg) translateZ(${H / 2}px)`);
+  box(F.bottom, L, e, `rotateX(-90deg) translateZ(${H / 2}px)`);
+  box(F.l, e, H, `rotateY(-90deg) translateZ(${L / 2}px)`);
+  box(F.r, e, H, `rotateY(90deg) translateZ(${L / 2}px)`);
+  // where the top face meets the slot it gets dark (ambient occlusion); only while it is in the slot
+  $('#casAO').style.opacity = p.e < D - .5 ? 1 : 0;
+  // contact shadow on the VCR front grows as the cassette gets close / sits in the slot
+  const o = slotCenter(), near = Math.max(0, 1 - Math.hypot(p.x - o.x, p.y - o.y, p.z - D / 2) / 160);
+  $('#slotShadow').style.opacity = (p.e < D - .5 ? .35 + .5 * p.e / D : .8 * near).toFixed(3);
+}
+function dressCassette(spine) {
+  const Lk = spine._look, it = spine._it;
+  F.back.innerHTML = `<div class="sp ${Lk.cls}" style="--c:${Lk.c};inset:auto;left:${L / 2 - H / 2}px;top:${H / 2 - L / 2}px;width:${H}px;height:${L}px;transform:rotate(90deg)">${Lk.html}</div>`;
+  const lab = $('#casLab'); lab.className = 'lab' + (Lk.cls === 'print' ? ' print' : ''); lab.style.setProperty('--c', Lk.c); lab.textContent = Lk.label;
+  const f = Math.min(1, pos.get(it.id) / it.duration || 0);   // tape on each reel = where you stopped
+  $('#casWin').style.setProperty('--r1', 13 + 18 * (1 - f) + 'px'); $('#casWin').style.setProperty('--r2', 13 + 18 * f + 'px');
+}
+function slotCenter() { const h = sr($('#inside')); return {x: h.x + h.w / 2, y: h.y + h.h / 2 + 1}; }
+function spineCenter(spine) { const r = sr(spine), lift = matchMedia('(hover:hover)').matches && spine.matches(':hover') ? 14 : 0; return {x: r.x + r.w / 2, y: r.y + r.h / 2 - lift}; }
+// the viewer sits on the sofa, eyes at the height of the TV picture: you look *down* onto the VCR
+function eye() { const t = sr(tube); air.style.perspectiveOrigin = `${t.x + t.w / 2}px ${t.y + t.h * .55}px`; }
+
+const ease = {
+  io: t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2,
+  out: t => 1 - Math.pow(1 - t, 3),
+  in: t => t * t * t,
+  push: t => t < .15 ? (t / .15) ** 2 * .1 : .1 + .9 * (1 - Math.pow(1 - (t - .15) / .85, 2)),   // finger finds the spine, then pushes
+  motor: t => t < .2 ? (t / .2) ** 2 * .12 : .12 + .88 * ((t - .2) / .8),                        // spins up, then constant speed
+  spit: t => { const b = 1 - Math.pow(1 - t, 3); return b + Math.sin(t * Math.PI) * .04; },
+};
+const lerp = (a, b, t) => a + (b - a) * t;
+const bez = (a, c, b, t) => (1 - t) * (1 - t) * a + 2 * (1 - t) * t * c + t * t * b;
+// move from pose A to pose B; positions may follow a curve through `via`
+function go(A, B, ms, fn = ease.io, via = null) {
+  return new Promise(res => {
+    const t0 = performance.now(), dur = ms * SLOW;
+    (function step(now) {
+      const k = Math.min(1, Math.max(0, (now - t0) / dur)), t = fn(k), p = {};
+      for (const key of ['x', 'y', 'z', 'rx', 'ry', 'rz', 'e']) p[key] = lerp(A[key] ?? 0, B[key] ?? 0, t);
+      if (via) { const u = ease.io(k); p.x = bez(A.x, via.x, B.x, u); p.y = bez(A.y, via.y, B.y, u); p.z = bez(A.z, via.z, B.z, u); }
+      // inserting: keep the far end flush with the panel
+      if (B.flush && A.flush) p.z = p.e / 2;
+      render(p);
+      k < 1 ? requestAnimationFrame(step) : res(p);
+    })(t0);
+  });
+}
+const flap = $('#flap'), vcrEl = $('#vcr');
+function thud() { for (const el of [vcrEl, $('#vcrTop')]) { el.classList.remove('thud'); void el.offsetWidth; el.classList.add('thud'); } }
+// One continuous move through several poses: a Catmull-Rom spline through all of them (position *and*
+// rotation), timed by arc length with a single minimum-jerk speed profile, so it never stops in mid-air.
+const minJerk = t => t * t * t * (10 - 15 * t + 6 * t * t);
+const KEYS = ['x', 'y', 'z', 'rx', 'ry', 'rz'];
+function flight(pts, ms, profile = minJerk) {
+  pts = pts.map(p => ({rx: 0, ry: 0, rz: 0, ...p}));
+  const n = pts.length - 1;
+  const cr = (a, b, c, d, u) => .5 * (2 * b + (c - a) * u + (2 * a - 5 * b + 4 * c - d) * u * u + (3 * b - a - 3 * c + d) * u * u * u);
+  const at = s => {                                   // s in [0, n]: spline position through all poses
+    const i = Math.min(n - 1, Math.floor(s)), u = s - i, p = {e: D};
+    const a = pts[Math.max(0, i - 1)], b = pts[i], c = pts[i + 1], d = pts[Math.min(n, i + 2)];
+    for (const key of KEYS) p[key] = cr(a[key], b[key], c[key], d[key], u);
+    return p;
+  };
+  // sample densely and measure the real distance travelled (rotation counts too), so the speed along the
+  // whole path follows the profile exactly instead of changing from one segment to the next
+  const N = 600, table = [0]; let prev = at(0);
+  for (let j = 1; j <= N; j++) { const q = at(j / N * n); table.push(table[j - 1] + Math.hypot(q.x - prev.x, q.y - prev.y, q.z - prev.z, 2.2 * (q.rx - prev.rx), 2.2 * (q.ry - prev.ry), 2.2 * (q.rz - prev.rz))); prev = q; }
+  const L = table[N] || 1;
+  const sOf = g => { const target = g * L; let lo = 0, hi = N; while (hi - lo > 1) { const m = (lo + hi) >> 1; table[m] < target ? lo = m : hi = m; } const f = (target - table[lo]) / ((table[hi] - table[lo]) || 1); return (lo + f) / N * n; };
+  const seed = Math.random() * 10;
+  return new Promise(res => {
+    const t0 = performance.now(), dur = ms * SLOW;
+    (function step(now) {
+      const k = Math.min(1, Math.max(0, (now - t0) / dur)), g = profile(k), p = at(sOf(g));
+      // a living hand: a little tremor, strongest mid-flight, gone at both ends
+      const w = Math.sin(Math.PI * g), tt = (now - t0) / 1000 / SLOW + seed;
+      p.rz += w * .8 * Math.sin(tt * 4.3); p.rx += w * .6 * Math.sin(tt * 3.1 + 1); p.y += w * 1.2 * Math.sin(tt * 2.7 + 2);
+      render(p);
+      k < 1 ? requestAnimationFrame(step) : res(p);
+    })(t0);
+  });
+}
+function poses(spine) {
+  const s = spineCenter(spine), o = slotCenter();
+  return {
+    shelf:  {x: s.x, y: s.y, z: 0, rz: -90, e: D},
+    pulled: {x: s.x, y: s.y - 6, z: 70, rz: -90, rx: 0, ry: 8, e: D},
+    hand:   {x: o.x - 70, y: o.y - 250, z: 470, rx: -48, ry: 6, rz: -10, e: D},   // in your hand, in front of the screen   // held in front of you, label up
+    lineup: {x: o.x + 6, y: o.y - 34, z: D / 2 + 90, rx: -10, rz: -3, e: D},
+    touch:  {x: o.x + 2, y: o.y - 3, z: D / 2 + 6, rx: -3, rz: -1.2, e: D},
+    mouth:  {x: o.x, y: o.y, z: D / 2 + .5, e: D, flush: true},
+    o,
+  };
+}
+async function takeOut(spine) {
+  eye(); dressCassette(spine);
+  const P = poses(spine);
+  render(P.shelf); cas.style.display = 'block'; spine.classList.add('out');
+  sfx.slide(.3);
+  // off the shelf, label-up in your hand, over to the machine, into the guides: one movement
+  await flight([P.shelf, P.pulled, P.hand, P.lineup, P.touch, P.mouth], 2100);
+}
+async function pushIn(spine) {
+  const P = poses(spine), M = P.mouth;
+  sfx.click(); flap.classList.add('open'); sfx.slide(.45);
+  const pushed = {...M, e: D * .58, flush: true};
+  await go(M, pushed, 520, ease.push);                                 // your hand pushes it a good way in
+  await wait(140);                                                     // …the machine feels it…
+  sfx.motor(.75); vfd('LOAD');
+  await go(pushed, {...M, e: 0, flush: true}, 560, ease.motor);        // …and draws it in
+  cas.style.display = 'none'; $('#slotShadow').style.opacity = 0;
+  flap.classList.remove('open'); sfx.click(.04);
+  await wait(260); sfx.clunk(); thud();                                // lowered onto the drum
+  sfx.heads(.2);
+}
+async function pushOut(spine) {
+  eye(); dressCassette(spine);
+  const P = poses(spine), M = P.mouth;
+  sfx.motor(.7); sfx.clunk(.02); thud();
+  await wait(320);
+  flap.classList.add('open'); sfx.click(); cas.style.display = 'block';
+  await go({...M, e: 0, flush: true}, {...M, e: D * .42, flush: true}, 620, ease.spit);   // spits it half out
+}
+async function putBack(spine) {
+  const P = poses(spine), M = P.mouth;
+  sfx.slide(.35);
+  await go({...M, e: D * .42, flush: true}, {...M, e: D, flush: true}, 300, ease.in);   // grab it and pull…
+  flap.classList.remove('open'); sfx.click(.03);
+  // …and keep going without a stop: back up, turn it, slide it into its gap
+  const out = {...M, z: D / 2, flush: false};
+  const m0 = minJerk(.25);   // start already moving (you are pulling), then come smoothly to rest in the shelf
+  await flight([out, P.lineup, P.hand, P.pulled, P.shelf], 1900, t => (minJerk(.25 + .75 * t) - m0) / (1 - m0));
+  sfx.slide(.25);
+  spine.classList.remove('out'); cas.style.display = 'none';
+}
+if (new URLSearchParams(location.search).has('debug')) window.__fid = {poses, render, dressCassette, eye, D, cas, spines: () => [...document.querySelectorAll('.spine')]};
+
+// ---------- VCR logic ----------
+async function eject() {
+  if (!loaded || busy) return; busy = true;
+  if (zoomed) { zoom(false); await wait(1500); }
+  clearInterval(seekTimer); seekTimer = null; v.pause(); vfd('EJECT');
+  const spine = loadedSpine, it = loaded; loaded = null; loadedSpine = null;
+  dressCassette(spine);
+  osd('⏏', true); tube.classList.remove('vhsfx','noise','seek'); tube.classList.add('bluescreen');
+  v.removeAttribute('src'); v.load();
+  await pushOut(spine); await wait(250); await putBack(spine);
+  if (pos.get(it.id) > 30 && !spine.querySelector('.rew')) spine.insertAdjacentHTML('beforeend', '<div class="rew" title="Bitte zurückspulen!">↺</div>');
+  vfd('--:--'); osd('AV  KEINE KASSETTE', true); busy = false;
+}
+
+async function insert(spine) {
+  if (busy || spine === loadedSpine) return;
+  const it = spine._it;
+  // iOS only lets a video start with sound from inside a tap. Start it *now*, muted and hidden,
+  // so it is buffering while the cassette travels; it is un-muted once the tape is in.
+  if (loaded) await eject();
+  busy = true;
+  autoZoom = sessionStorage.getItem('fid-room') !== '1';
+  if (autoZoom) enterPageFS();
+  v.src = it.src; v.muted = true; tube.classList.add('hidevid'); v.play().catch(() => {});
+  const r = pos.get(it.id);
+  if (!tvOn) power(true);
+  await takeOut(spine);
+  await pushIn(spine);
+  loaded = it; loadedSpine = spine;
+  tube.classList.remove('bluescreen'); tube.classList.add('noise'); osd('', true);
+  tube.classList.toggle('vhsfx', it.category === 'vhs');
+  await wait(900);
+  v.pause(); v.currentTime = r > 30 ? r : 0; tube.classList.remove('hidevid');
+  busy = false;
+  play();
+  // let the picture come up on the set for a moment, then move in
+  setTimeout(() => { if (loaded === it) autoZoom ? zoom(true) : hintRoom(); }, 1300);
+  if (it.play) osd(it.play.toUpperCase(), false);
+}
+
+function play() {
+  if (!loaded) return toast('Keine Kassette eingelegt.');
+  clearInterval(seekTimer); seekTimer = null; tube.classList.remove('seek','bluescreen');
+  v.muted = false;
+  v.play().then(() => { tube.classList.remove('noise'); $('#osdB').textContent = ''; }).catch(() => {
+    // Safari refused sound without a fresh tap: ask for one
+    $('#osdB').textContent = '▶ ZUM ABSPIELEN TIPPEN'; tube.classList.remove('noise');
+  });
+  v.addEventListener('playing', () => tube.classList.remove('noise'), {once: true});
+  osd('▶ PLAY'); $('[data-f=pp]').textContent = '❚❚';
+}
+function pause() { if (!loaded) return; v.pause(); osd('❚❚', true); $('[data-f=pp]').textContent = '▶'; }
+function stop() { if (!loaded) return; v.pause(); osd('■ STOP'); tube.classList.add('bluescreen'); vfd(counter(), '■'); }
+function search(dir) {
+  if (!loaded) return;
+  v.pause(); tube.classList.add('seek'); tube.classList.remove('bluescreen'); sfx.motor(.4);
+  osd(dir > 0 ? '▶▶ SUCHLAUF' : '◀◀ SUCHLAUF', true);
+  let speed = 4;
+  seekTimer = setInterval(() => { speed = Math.min(speed * 1.08, 60); v.currentTime = Math.max(0, v.currentTime + dir * speed); v.ontimeupdate(); }, 110);
+}
+function endSearch() { if (!seekTimer) return; clearInterval(seekTimer); seekTimer = null; tube.classList.remove('seek'); play(); }
+function hold(btn, dir) {
+  btn.onpointerdown = e => { e.preventDefault(); btn.setPointerCapture?.(e.pointerId); btn.classList.add('held'); sfx.click(); search(dir); };
+  btn.onpointerup = btn.onpointercancel = () => { btn.classList.remove('held'); endSearch(); };
+  btn.oncontextmenu = e => e.preventDefault();
+}
+document.querySelectorAll('.btns button').forEach(b => {
+  const k = b.dataset.k;
+  if (k === 'ff' || k === 'rew') hold(b, k === 'ff' ? 1 : -1);
+  else b.onclick = () => { sfx.click(); ({eject, play, pause, stop, full: fullscreen, rec: () => toast('Schreibschutz! Die Lasche ist rausgebrochen. ✂')})[k](); };
+});
+
+// remote control: index search 0–9 jumps to 0 %…90 % of the tape
+const remote = $('#remote');
+['1','2','3','4','5','6','7','8','9','◀◀','0','▶▶'].forEach(n => {
+  const b = document.createElement('button'); b.textContent = n; remote.appendChild(b);
+  if (/\d/.test(n)) b.onclick = () => { if (!loaded) return; tube.classList.add('seek'); osd('INDEX ' + n, true); v.currentTime = (v.duration || loaded.duration) * (+n) / 10; setTimeout(() => { tube.classList.remove('seek'); play(); }, 600); };
+  else { const d = n === '▶▶' ? 30 : -30; b.onclick = () => { if (loaded) { v.currentTime += d; osd(n + ' ' + (d > 0 ? '+' : '') + d + 's'); } }; }
+});
+['▶','❚❚','⏏'].forEach((n, i) => { const b = document.createElement('button'); b.textContent = n; b.onclick = [play, () => v.paused ? play() : pause(), eject][i]; remote.appendChild(b); });
+
+// volume knob (iOS ignores video.volume — then say so)
+let vy = null; const knob = $('#vol');
+knob.onpointerdown = e => { vy = e.clientY; knob.setPointerCapture(e.pointerId); };
+knob.onpointermove = e => {
+  if (vy === null) return; const before = v.volume, want = Math.min(1, Math.max(0, v.volume - (e.clientY - vy) / 150)); vy = e.clientY;
+  v.volume = want; if (v.volume === before && want !== before) { toast('Lautstärke bitte am Gerät einstellen.'); vy = null; return; }
+  knob.style.transform = `rotate(${v.volume * 270 - 135}deg)`; osd('LAUTST. ' + '▮'.repeat(Math.round(v.volume * 12)));
+};
+knob.onpointerup = () => vy = null;
+
+// ---------- full screen = the camera moves into the TV ----------
+// The tap on a tape is the only moment the browser allows real fullscreen, so the page goes fullscreen right
+// then (the room fills the screen); once the picture is on, the camera dollies into the set.
+// iPhone has no page fullscreen: there only the camera move happens.
+const docFS = () => !!(document.fullscreenElement || document.webkitFullscreenElement);
+function enterPageFS() {
+  const el = document.documentElement, rq = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (rq && !docFS() && sessionStorage.getItem('fid-room') !== '1') try { const r = rq.call(el, {navigationUI: 'hide'}); r?.catch?.(() => {}); } catch {}
+}
+function zoom(on) {
+  if (on === zoomed) return;
+  if (on && !loaded) return toast('Erst eine Kassette einlegen.');
+  zoomed = on; document.body.classList.toggle('zoomed', on); tube.classList.remove('hint');
+  if (on) { calmSoon(); screen.orientation?.lock?.('landscape').catch(() => {}); }
+  else { clearTimeout(calmT); document.body.classList.remove('calm'); if (docFS()) (document.exitFullscreen || document.webkitExitFullscreen).call(document); }
+  stage.classList.add('moving'); fit(); clearTimeout(zoom.t); zoom.t = setTimeout(() => stage.classList.remove('moving'), 1700);
+}
+function fullscreen() { if (!zoomed) enterPageFS(); zoom(!zoomed); }
+// leaving browser fullscreen (Esc, swipe) also steps back into the room
+const onFSchange = () => { if (!docFS() && zoomed) zoom(false); };
+document.addEventListener('fullscreenchange', onFSchange); document.addEventListener('webkitfullscreenchange', onFSchange);
+tube.addEventListener('click', () => {
+  if ($('#osdB').textContent) { play(); return; }               // the "tap to play" fallback
+  if (zoomed) { document.body.classList.toggle('calm'); if (!document.body.classList.contains('calm')) calmSoon(); return; }
+  fullscreen();
+});
+let calmT; function calmSoon() { clearTimeout(calmT); calmT = setTimeout(() => document.body.classList.add('calm'), 3000); }
+addEventListener('pointermove', () => { if (zoomed) { document.body.classList.remove('calm'); calmSoon(); } });
+let hintT; function hintRoom() { if (zoomed || !loaded) return; tube.classList.remove('hint'); void tube.offsetWidth; tube.classList.add('hint'); clearTimeout(hintT); hintT = setTimeout(() => tube.classList.remove('hint'), 6000); }
+document.querySelectorAll('.fsbar button').forEach(b => {
+  const f = b.dataset.f;
+  if (f === 'ff' || f === 'rew') hold(b, f === 'ff' ? 1 : -1);
+  else b.onclick = e => { e.stopPropagation(); calmSoon(); if (f === 'pp') v.paused ? play() : pause(); if (f === 'exit') { sessionStorage.setItem('fid-room', '1'); zoom(false); hintRoom(); } };
+});
+v.addEventListener('loadedmetadata', () => { if (zoomed) fit(); });
+const prog = $('#prog');
+prog.onpointerdown = e => { e.stopPropagation(); const r = prog.getBoundingClientRect(); if (loaded) { v.currentTime = (v.duration || loaded.duration) * Math.min(1, Math.max(0, (e.clientX - r.left) / r.width)); osd('▶▶ SPRUNG'); } };
+
+addEventListener('keydown', e => {
+  if (e.code === 'Space') { e.preventDefault(); v.paused ? play() : pause(); }
+  if (e.key === 'ArrowRight') v.currentTime += 10;
+  if (e.key === 'ArrowLeft') v.currentTime -= 10;
+  if (e.key === 'f') fullscreen();
+  if (e.key === 'Escape' && zoomed) { sessionStorage.setItem('fid-room', '1'); zoom(false); hintRoom(); }
+});
+v.onended = () => { osd('■ BANDENDE', true); vfd('END'); };
+let tt; function toast(t) { $('#toast').textContent = t; $('#toast').classList.add('show'); clearTimeout(tt); tt = setTimeout(() => $('#toast').classList.remove('show'), 2600); }
+</script>
+</body>
+</html>

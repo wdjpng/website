@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fidibus · Die Litfaßsäule</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Abril+Fatface&family=Oswald:wght@500;700&family=Special+Elite&family=Cormorant+Garamond:ital,wght@1,500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;overflow:hidden;background:#0d1220}
+body{font-family:Oswald,sans-serif;color:#f1e6cc}
+/* ---------- street ---------- */
+#street{position:absolute;inset:0;transition:opacity 1s, transform 1.2s cubic-bezier(.6,0,.3,1);
+  background:
+   radial-gradient(ellipse 38% 70% at 50% 18%,rgba(255,214,140,.30),transparent 70%),
+   linear-gradient(#0b1020 0%,#16203a 62%,#1c1d22 62.2%,#26262b 100%)}
+#street.leave{opacity:0;transform:scale(2.4)}
+.cobbles{position:absolute;left:0;right:0;bottom:0;height:38%;opacity:.5;
+  background:radial-gradient(ellipse 22px 9px at 50% 50%,#3a3a40 60%,transparent 64%) 0 0/48px 20px,radial-gradient(ellipse 22px 9px at 50% 50%,#34343a 60%,transparent 64%) 24px 10px/48px 20px;
+  -webkit-mask:linear-gradient(transparent,#000 40%);mask:linear-gradient(transparent,#000 40%)}
+.lamp{position:absolute;left:calc(50% + 300px);top:0;width:10px;height:72%;background:linear-gradient(90deg,#111,#333,#111)}
+.lamp::before{content:"";position:absolute;left:-40px;top:6%;width:90px;height:40px;background:#1b1b1b;clip-path:polygon(20% 0,80% 0,100% 100%,0 100%)}
+.lamp::after{content:"";position:absolute;left:-26px;top:calc(6% + 38px);width:62px;height:14px;border-radius:50%;background:#ffe7a8;box-shadow:0 0 40px 20px rgba(255,210,120,.5)}
+.title{position:absolute;left:4vw;top:5vh;max-width:330px;z-index:3}
+.title h1{margin:0;font:clamp(34px,4vw,56px)/.95 'Abril Fatface',serif;color:#f4e3b5;text-shadow:0 2px 0 #000}
+.title p{font:italic 500 20px/1.3 'Cormorant Garamond',serif;color:#c9b993;margin:12px 0 0}
+.help{position:absolute;left:4vw;bottom:5vh;font:15px 'Special Elite',monospace;color:#9aa0b5;z-index:3;line-height:1.6}
+.now{position:absolute;right:4vw;bottom:5vh;text-align:right;z-index:3;max-width:320px}
+.now b{display:block;font:30px/1 'Abril Fatface';color:#f4e3b5}
+.now span{font:15px 'Special Elite';color:#9aa0b5}
+
+.scene{position:absolute;left:50%;top:50%;width:0;height:0;perspective:1600px;cursor:grab;z-index:2}
+.scene:active{cursor:grabbing}
+.col{position:absolute;left:0;top:0;transform-style:preserve-3d}
+.ring{position:absolute;left:0;transform-style:preserve-3d}
+.facet{position:absolute;top:0;backface-visibility:hidden;background-repeat:no-repeat}
+.shade{position:absolute;pointer-events:none;
+  background:linear-gradient(90deg,rgba(5,8,18,.92),rgba(5,8,18,.35) 22%,rgba(255,225,160,.10) 46%,rgba(255,225,160,.04) 54%,rgba(5,8,18,.35) 78%,rgba(5,8,18,.95))}
+.cap,.base{position:absolute;pointer-events:none}
+.cap{background:linear-gradient(90deg,#0f1a14,#3e5a47 40%,#56785f 50%,#2f4636 70%,#0c1510);border-radius:50% 50% 6px 6px/70% 70% 6px 6px}
+.cap::after{content:"";position:absolute;left:46%;top:-26px;width:8%;height:30px;background:#2f4636;border-radius:50% 50% 0 0}
+.base{background:linear-gradient(90deg,#0f1a14,#3e5a47 40%,#56785f 50%,#2f4636 70%,#0c1510)}
+.rim{position:absolute;pointer-events:none;height:10px;background:linear-gradient(90deg,#14201a,#4b6b55 45%,#5f8569 50%,#2b4033 70%,#101a14)}
+
+/* ---------- ticket ---------- */
+#ticketWrap{position:absolute;inset:0;z-index:20;display:grid;place-items:center;background:rgba(5,8,18,.7);opacity:0;pointer-events:none;transition:opacity .5s}
+#ticketWrap.show{opacity:1;pointer-events:auto}
+.ticket{display:flex;transform:rotate(-3deg) scale(.9);transition:transform .5s;filter:drop-shadow(0 20px 30px rgba(0,0,0,.6))}
+.show .ticket{transform:rotate(-3deg) scale(1)}
+.tmain,.tstub{background:#f2e3b8;color:#3a2516;position:relative;
+  background-image:repeating-linear-gradient(45deg,rgba(150,90,30,.06) 0 2px,transparent 2px 6px)}
+.tmain{width:min(470px,62vw);padding:22px 28px;border-radius:8px 0 0 8px;
+  -webkit-mask:radial-gradient(circle 9px at 100% 0,transparent 98%,#000) ,radial-gradient(circle 9px at 100% 100%,transparent 98%,#000);-webkit-mask-composite:source-in;
+  mask:radial-gradient(circle 9px at 100% 0,transparent 98%,#000),radial-gradient(circle 9px at 100% 100%,transparent 98%,#000);mask-composite:intersect}
+.tmain small{font:13px 'Special Elite';letter-spacing:.15em;color:#8a3b1c}
+.tmain h2{margin:6px 0 4px;font:42px/1 'Abril Fatface';color:#7d1620}
+.tmain .meta{font:15px 'Special Elite';line-height:1.6}
+.tmain .seat{display:inline-block;margin-top:10px;border:2px solid #3a2516;padding:3px 10px;font:600 16px Oswald;letter-spacing:.08em}
+.tstub{width:150px;padding:22px 14px;border-left:2px dashed rgba(58,37,22,.5);border-radius:0 8px 8px 0;text-align:center;cursor:grab;touch-action:none;
+  -webkit-mask:radial-gradient(circle 9px at 0 0,transparent 98%,#000),radial-gradient(circle 9px at 0 100%,transparent 98%,#000);-webkit-mask-composite:source-in;
+  mask:radial-gradient(circle 9px at 0 0,transparent 98%,#000),radial-gradient(circle 9px at 0 100%,transparent 98%,#000);mask-composite:intersect}
+.tstub b{display:block;overflow-wrap:anywhere;hyphens:auto;font:17px/1.1 'Abril Fatface';color:#7d1620;margin:8px 0}
+.tstub span{font:12px 'Special Elite'}
+.tstub.torn{transition:transform 1s cubic-bezier(.5,0,.8,.4),opacity 1s;transform:translate(120px,420px) rotate(38deg);opacity:0}
+.thint{position:absolute;bottom:12vh;width:100%;text-align:center;font:16px 'Special Elite';color:#c9b993}
+
+/* ---------- auditorium ---------- */
+#hall{position:absolute;inset:0;z-index:10;background:radial-gradient(ellipse 70% 40% at 50% 92%,rgba(255,170,90,.20),transparent 70%),radial-gradient(ellipse 60% 50% at 50% 40%,rgba(255,190,120,.07),transparent 70%),#050304;opacity:0;pointer-events:none;transition:opacity 1.4s;overflow:hidden;perspective:1200px}
+#hall.show{opacity:1;pointer-events:auto}
+.view{position:absolute;inset:0;transition:transform 1.6s cubic-bezier(.4,0,.2,1);transform-origin:50% 45%}
+.prosc{position:absolute;left:50%;top:7%;width:min(84vw,calc(70vh * 1.6));aspect-ratio:16/10;transform:translateX(-50%);
+  background:#000;box-shadow:0 0 0 18px #3a0a10,0 0 0 22px #8a6a2a,0 0 160px 60px rgba(255,190,110,.10)}
+.prosc video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.prosc .drape{position:absolute;top:-4%;bottom:0;width:9%;z-index:2;background:repeating-linear-gradient(90deg,#3d0710 0,#7b1420 25%,#3d0710 50%)}
+.prosc .drape.l{left:-6%}.prosc .drape.r{right:-6%}
+.prosc .top{position:absolute;left:-7%;right:-7%;top:-9%;height:12%;z-index:3;background:repeating-linear-gradient(90deg,#4a0a14 0,#86182a 2%,#4a0a14 4%);border-bottom:4px solid #8a6a2a}
+.prosc .glow{position:absolute;left:0;right:0;bottom:-3%;height:3%;background:linear-gradient(#ffcf7a,transparent);opacity:.25;filter:blur(4px)}
+.heads{position:absolute;left:-10%;right:-10%;bottom:0;pointer-events:none;transition:transform 1.6s cubic-bezier(.4,0,.2,1),opacity 1s}
+.heads svg{width:100%;height:auto;display:block}
+.heads .h{animation:bob 7s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 100%}
+@keyframes bob{0%,100%{transform:none}40%{transform:translateX(3px) rotate(1.5deg)}70%{transform:translateX(-2px)}}
+
+/* stub in hand = controls */
+.stub{position:absolute;right:3vw;bottom:4vh;z-index:5;width:250px;background:#f2e3b8;color:#3a2516;padding:12px 14px 10px;transform:rotate(4deg);border-radius:4px;
+  box-shadow:0 10px 30px rgba(0,0,0,.6);background-image:repeating-linear-gradient(45deg,rgba(150,90,30,.06) 0 2px,transparent 2px 6px);transition:opacity .6s}
+.stub small{font:11px 'Special Elite';letter-spacing:.12em;color:#8a3b1c}
+.stub b{display:block;font:22px/1.1 'Abril Fatface';color:#7d1620;margin:2px 0 6px}
+.punch{position:relative;height:22px;cursor:pointer;display:flex;align-items:center;justify-content:space-between;margin:0 -2px}
+.punch i{width:6px;height:6px;border-radius:50%;background:rgba(58,37,22,.25);flex:none}
+.punch i.p{background:#050304;box-shadow:inset 0 1px 1px rgba(255,255,255,.2)}
+.stub .row{display:flex;justify-content:space-between;align-items:center;font:12px 'Special Elite'}
+.stub button{font:600 13px Oswald;letter-spacing:.06em;background:#7d1620;color:#f2e3b8;border:0;padding:3px 10px;border-radius:2px;cursor:pointer}
+.plan{position:absolute;left:3vw;bottom:4vh;z-index:5;background:rgba(20,14,12,.85);border:1px solid #5a4630;padding:10px 12px;border-radius:4px;font:11px 'Special Elite';color:#c9b993;transition:opacity .6s}
+.plan .stagebar{height:6px;background:#8a6a2a;margin:4px 10px 8px;border-radius:3px}
+.plan .seats{display:grid;grid-template-columns:repeat(12,12px);gap:3px}
+.plan .s{width:12px;height:10px;border-radius:3px 3px 1px 1px;background:#4b2a2a;cursor:pointer}
+.plan .s:hover{background:#c08a4a}.plan .s.me{background:#ffcf7a;box-shadow:0 0 6px #ffcf7a}
+.plan .s.gap{visibility:hidden}
+.back{position:absolute;left:3vw;top:3vh;z-index:5;font:15px 'Special Elite';color:#9a8a70;cursor:pointer;background:none;border:0;transition:opacity .6s}
+.back:hover{color:#f2e3b8}
+#hall.immersed .stub,#hall.immersed .plan,#hall.immersed .back{opacity:.08}
+#hall.immersed .stub:hover,#hall.immersed .plan:hover,#hall.immersed .back:hover{opacity:1}
+</style>
+</head>
+<body>
+<div id="street">
+  <div class="cobbles"></div>
+  <div class="lamp"></div>
+  <div class="title"><h1>Was spielt Fidibus heute?</h1><p>Die Plakate von dreißig Jahren Märchentheater — dreht die Säule und sucht euch eine Vorstellung aus.</p></div>
+  <div class="help">⟲ ziehen zum Drehen<br>✋ auf ein Plakat tippen für eine Karte</div>
+  <div class="now"><b id="nowT">&nbsp;</b><span id="nowS"></span></div>
+  <div class="scene" id="scene"><div class="col" id="col"></div></div>
+</div>
+
+<div id="ticketWrap">
+  <div class="ticket">
+    <div class="tmain"><small>MÄRCHENTHEATER FIDIBUS · EINTRITTSKARTE</small><h2 id="tT"></h2>
+      <div class="meta" id="tM"></div><div class="seat" id="tSeat"></div></div>
+    <div class="tstub" id="tStub"><span>KONTROLL-<br>ABSCHNITT</span><b id="tS2"></b><span id="tSeat2"></span></div>
+  </div>
+  <div class="thint">Abschnitt abreißen ↘ (ziehen oder tippen) · Esc: zurück</div>
+</div>
+
+<div id="hall">
+  <div class="view" id="view">
+    <div class="prosc" id="prosc"><div class="top"></div><div class="drape l"></div><div class="drape r"></div><video id="v" playsinline preload="none"></video><div class="glow"></div></div>
+  </div>
+  <div class="heads" id="heads"></div>
+  <button class="back" id="back">← hinaus auf die Straße</button>
+  <div class="plan"><div>SAALPLAN · euer Platz</div><div class="stagebar"></div><div class="seats" id="seats"></div></div>
+  <div class="stub"><small>KONTROLLABSCHNITT</small><b id="sT"></b>
+    <div class="punch" id="punch" title="Klickt eine Lochung, um zu springen"></div>
+    <div class="row"><span id="sTime">0:00</span><button id="pp">❚❚ Pause</button></div></div>
+</div>
+
+<script type="module">
+import {loadCatalog, fmt, minutes, pos} from './shared.js';
+const $ = s => document.querySelector(s);
+const items = await loadCatalog();
+await document.fonts.load('40px "Abril Fatface"'); await document.fonts.load('20px Oswald'); await document.fonts.load('16px "Special Elite"');
+const wait = ms => new Promise(r => setTimeout(r, ms));
+
+// ---------- posters, printed on canvas ----------
+const loadImg = src => new Promise(r => { const i = new Image(); i.onload = () => r(i); i.src = src; });
+const styles = {
+  stage:{paper:'#efe2bf',ink:'#7d1620',ink2:'#1d1712',kicker:'MÄRCHENTHEATER FIDIBUS ZEIGT'},
+  vhs:{paper:'#d9e1e8',ink:'#173a6b',ink2:'#1b2330',kicker:'AUS DEM BANDARCHIV'},
+  short:{paper:'#f1c94c',ink:'#1d1712',ink2:'#1d1712',kicker:'KOSTPROBE'},
+  backstage:{paper:'#e8e1d2',ink:'#2d4a3a',ink2:'#1d1712',kicker:'HINTER DEN KULISSEN'},
+};
+function fitText(ctx, txt, font, max, start) { let s = start; do { ctx.font = font.replace('#', s); s -= 2; } while (ctx.measureText(txt).width > max && s > 10); return s + 2; }
+async function poster(it, W, H) {
+  const c = document.createElement('canvas'); c.width = W * 2; c.height = H * 2; const x = c.getContext('2d'); x.scale(2, 2);
+  const st = styles[it.category]; const pad = W * .07;
+  x.fillStyle = st.paper; x.fillRect(0, 0, W, H);
+  for (let i = 0; i < 1400; i++) { x.fillStyle = `rgba(80,50,20,${Math.random() * .06})`; x.fillRect(Math.random() * W, Math.random() * H, 1.5, 1.5); }
+  x.fillStyle = st.ink; x.font = `500 ${Math.max(9, W * .045)}px Oswald`; x.textAlign = 'center'; x.fillText(st.kicker.split('').join('\u200a'), W / 2, pad + W * .03);
+  const img = await loadImg(it.poster);
+  const ph = H * .5, py = pad + W * .07, pw = W - 2 * pad;
+  const sc = Math.max(pw / img.width, ph / img.height);
+  x.save(); x.beginPath(); x.rect(pad, py, pw, ph); x.clip();
+  x.filter = it.category === 'vhs' ? 'grayscale(1) contrast(1.2)' : it.category === 'short' ? 'grayscale(1) contrast(1.4) sepia(.3)' : 'saturate(1.1)';
+  x.drawImage(img, pad + (pw - img.width * sc) / 2, py + (ph - img.height * sc) / 2, img.width * sc, img.height * sc);
+  if (it.category === 'vhs') { x.globalCompositeOperation = 'multiply'; x.fillStyle = '#6f9ccf'; x.fillRect(pad, py, pw, ph); }
+  x.restore();
+  const name = it.category === 'vhs' ? it.short : it.title.split(' · ')[0];
+  x.fillStyle = st.ink2;
+  const fs = fitText(x, name, '#px "Abril Fatface"', pw, W * .17);
+  x.fillText(name, W / 2, py + ph + fs * 1.05);
+  x.fillStyle = st.ink; x.font = `500 ${Math.max(9, W * .05)}px Oswald`;
+  const sub = it.category === 'vhs' ? 'Historische Bühnenaufzeichnung' : it.subtitle;
+  x.fillText(sub.toUpperCase(), W / 2, py + ph + fs * 1.05 + W * .075);
+  x.font = `${Math.max(9, W * .045)}px "Special Elite"`; x.fillStyle = st.ink2;
+  x.fillText([it.season && it.season !== 'VHS-Archiv' ? 'Spielzeit ' + it.season : null, minutes(it.duration)].filter(Boolean).join('  ·  '), W / 2, H - pad * .9);
+  // pasting wrinkles
+  const g = x.createLinearGradient(0, 0, W, 0); g.addColorStop(0, 'rgba(0,0,0,.12)'); g.addColorStop(.03, 'rgba(0,0,0,0)'); g.addColorStop(.97, 'rgba(0,0,0,0)'); g.addColorStop(1, 'rgba(0,0,0,.15)');
+  x.fillStyle = g; x.fillRect(0, 0, W, H);
+  return c.toDataURL('image/jpeg', .86);
+}
+
+// ---------- the column ----------
+const R = 210, PER = 8;
+const vhs = items.filter(i => i.category === 'vhs');
+const rings = [
+  {list: items.filter(i => i.category === 'stage'), h: 300, off: 0},
+  {list: vhs.slice(0, 8), h: 210, off: 20},
+  {list: vhs.slice(8), h: 210, off: -15},
+  {list: items.filter(i => i.category === 'short' || i.category === 'backstage'), h: 210, off: 30},
+];
+const col = $('#col'); let y = 0;
+const totalH = rings.reduce((a, r) => a + r.h + 10, 0);
+const top0 = -totalH / 2;
+const M = 1600 / (1600 - R);              // front facets sit at z=R: their top/bottom edges appear magnified by M
+const W = R * 1600 / Math.sqrt(1600 ** 2 - R ** 2); // apparent half-width (silhouette tangent)
+const capEl = document.createElement('div'); capEl.className = 'cap'; Object.assign(capEl.style, {left: -W - 14 + 'px', width: 2 * W + 28 + 'px', top: top0 * M - 70 + 'px', height: '74px'}); $('#scene').appendChild(capEl);
+const facets = [], rims = [];
+for (const ring of rings) {
+  const n = ring.list.length, F = n * PER, fw = 2 * R * Math.tan(Math.PI / F) + .6, pw = fw * PER;
+  const el = document.createElement('div'); el.className = 'ring'; el.style.top = top0 + y + 'px'; col.appendChild(el);
+  ring.el = el;
+  const urls = await Promise.all(ring.list.map(it => poster(it, Math.round(pw), ring.h)));
+  for (let f = 0; f < F; f++) {
+    const p = Math.floor(f / PER), j = f % PER, d = document.createElement('div');
+    d.className = 'facet';
+    Object.assign(d.style, {width: fw + 'px', height: ring.h + 'px', left: -fw / 2 + 'px',
+      backgroundImage: `url(${urls[p]})`, backgroundSize: `${pw}px ${ring.h}px`, backgroundPosition: `${-j * fw}px 0`,
+      transform: `rotateY(${(f * 360 / F) + ring.off}deg) translateZ(${R}px)`});
+    d._it = ring.list[p]; el.appendChild(d); facets.push(d);
+  }
+  const rim = document.createElement('div'); rim.className = 'rim'; Object.assign(rim.style, {left: -W - 4 + 'px', width: 2 * W + 8 + 'px', top: (top0 + y + ring.h) * M + 'px', height: 10 * M + 'px'}); rims.push(rim);
+  y += ring.h + 10;
+}
+const shade = document.createElement('div'); shade.className = 'shade'; Object.assign(shade.style, {left: -W + 'px', width: 2 * W + 'px', top: top0 * M + 'px', height: totalH * M + 'px'}); $('#scene').appendChild(shade); rims.forEach(r => $('#scene').appendChild(r));
+const baseEl = document.createElement('div'); baseEl.className = 'base'; Object.assign(baseEl.style, {left: -W - 10 + 'px', width: 2 * W + 20 + 'px', top: (top0 + totalH) * M - 4 + 'px', height: '60px'}); $('#scene').appendChild(baseEl);
+function fit() { const s = Math.min(1, (innerHeight - 60) / (totalH * M + 150)); $('#scene').style.transform = `scale(${s}) translateY(20px)`; }
+fit(); addEventListener('resize', fit);
+
+// rotate with drag + inertia; idle drift
+let ang = 0, vel = .04, drag = null, moved = 0;
+const scene = $('#scene'), street = $('#street');
+street.addEventListener('pointerdown', e => { drag = e.clientX; moved = 0; vel = 0; });
+addEventListener('pointermove', e => { if (drag === null) return; const dx = e.clientX - drag; drag = e.clientX; moved += Math.abs(dx); vel = dx * .25; ang += dx * .25; });
+addEventListener('pointerup', e => {
+  if (drag === null) return; drag = null;
+  if (moved < 6) { const f = document.elementFromPoint(e.clientX, e.clientY); if (f?._it) openTicket(f._it); }
+});
+street.addEventListener('wheel', e => { vel += e.deltaY * .01 + e.deltaX * .01; }, {passive: true});
+(function spin() { if (drag === null) { ang += vel; vel = vel * .96 + .04 * .04; } col.style.transform = `rotateY(${ang}deg)`; requestAnimationFrame(spin); })();
+street.addEventListener('mousemove', e => { const f = document.elementFromPoint(e.clientX, e.clientY); const it = f?._it; $('#nowT').textContent = it ? (it.category === 'vhs' ? it.short : it.title.split(' · ')[0]) : '\u00a0'; $('#nowS').textContent = it ? [it.subtitle, minutes(it.duration)].join(' · ') : ''; });
+
+// ---------- ticket ----------
+let cur = null, seat = {row: 5, n: 7};
+const ROWS = 8, SEATS = 12;
+function seatTxt() { return `PARKETT · REIHE ${seat.row} · PLATZ ${seat.n}`; }
+function openTicket(it) {
+  cur = it;
+  $('#tT').textContent = it.category === 'vhs' ? it.short : it.title.split(' · ')[0];
+  const r = pos.get(it.id);
+  $('#tM').innerHTML = `${it.category === 'vhs' ? 'Aus dem Bandarchiv' : it.subtitle} · ${minutes(it.duration)}<br>${it.season && it.season !== 'VHS-Archiv' ? 'Spielzeit ' + it.season + ' · ' : ''}Eintritt frei${r > 30 ? '<br>Wiedereinlass ab ' + fmt(r) : ''}`;
+  $('#tSeat').textContent = seatTxt(); $('#tS2').textContent = $('#tT').textContent; $('#tSeat2').textContent = `R ${seat.row} · P ${seat.n}`;
+  $('#tStub').classList.remove('torn'); $('#tStub').style.transform = '';
+  $('#ticketWrap').classList.add('show');
+}
+$('#ticketWrap').onclick = e => { if (e.target.id === 'ticketWrap') $('#ticketWrap').classList.remove('show'); };
+const stub = $('#tStub'); let sd = null, sdx = 0;
+stub.onpointerdown = e => { sd = {x: e.clientX, y: e.clientY}; stub.setPointerCapture(e.pointerId); };
+stub.onpointermove = e => { if (!sd) return; const dx = e.clientX - sd.x, dy = e.clientY - sd.y; sdx = Math.hypot(dx, dy); stub.style.transform = `translate(${dx * .4}px,${dy * .4}px) rotate(${Math.min(25, sdx * .08)}deg)`; if (sdx > 120) tear(); };
+stub.onpointerup = () => { if (sd && sdx < 6) tear(); else if (sd) stub.style.transform = ''; sd = null; sdx = 0; };
+async function tear() {
+  if (stub.classList.contains('torn')) return; sd = null; stub.style.transform = ''; stub.classList.add('torn');
+  await wait(700); $('#ticketWrap').classList.remove('show'); street.classList.add('leave');
+  await wait(600); enterHall();
+}
+
+// ---------- auditorium ----------
+const v = $('#v'), hall = $('#hall');
+// seat plan
+for (let r = 1; r <= ROWS; r++) for (let n = 1; n <= SEATS; n++) {
+  const s = document.createElement('div'); s.className = 's' + ((n === 4 || n === 9) && r > 6 ? '' : ''); s.title = `Reihe ${r}, Platz ${n}`; s.dataset.r = r; s.dataset.n = n;
+  s.onclick = () => { seat = {row: r, n}; placeCamera(); };
+  $('#seats').appendChild(s);
+}
+// silhouettes: a children's theatre, so lots of small heads, the odd grown-up and a hair bow
+function rowSVG(seed, big) {
+  let rs = seed; const rnd = () => (rs = (rs * 9301 + 49297) % 233280) / 233280;
+  let out = '', x = 30;
+  while (x < 1570) {
+    const kid = rnd() < .7, w = kid ? 70 + rnd() * 16 : 92 + rnd() * 18, hy = kid ? 120 + rnd() * 25 : 70 + rnd() * 20, hr = kid ? 30 + rnd() * 5 : 36 + rnd() * 5;
+    const d = (rnd() * 3).toFixed(1);
+    out += `<g class="h" style="animation-delay:-${d}s;animation-duration:${5 + rnd() * 6}s">`
+      + `<path d="M${x - w / 2} 260 Q${x - w / 2} ${hy + hr * 1.6} ${x} ${hy + hr * 1.45} Q${x + w / 2} ${hy + hr * 1.6} ${x + w / 2} 260Z"/>`
+      + `<ellipse cx="${x}" cy="${hy}" rx="${hr * .9}" ry="${hr}"/>`
+      + (kid && rnd() < .25 ? `<path d="M${x + hr * .5} ${hy - hr * .9} l18 -12 l-2 22 z M${x + hr * .5} ${hy - hr * .9} l-6 -20 l20 6z"/>` : '')
+      + (kid && rnd() < .12 ? `<ellipse cx="${x - hr * .9}" cy="${hy - hr * .2}" rx="9" ry="16"/><ellipse cx="${x + hr * .9}" cy="${hy - hr * .2}" rx="9" ry="16"/>` : '')
+      + `</g>`;
+    x += w + 8 + rnd() * 30;
+  }
+  return `<svg viewBox="0 0 1600 260" preserveAspectRatio="xMidYMax slice"><g fill="${big ? '#000' : '#0a0607'}">${out}</g></svg>`;
+}
+function placeCamera() {
+  document.querySelectorAll('#seats .s').forEach(s => s.classList.toggle('me', +s.dataset.r === seat.row && +s.dataset.n === seat.n));
+  const side = (seat.n - (SEATS + 1) / 2) / ((SEATS - 1) / 2); // -1..1
+  const depth = (seat.row - 1) / (ROWS - 1);                     // 0 front .. 1 back
+  const scale = 1.1 - depth * .32;
+  $('#view').style.transform = `translateX(${-side * 9}vw) translateY(${(1 - depth) * -2}vh) scale(${scale}) rotateY(${side * 9}deg) rotateX(${(1 - depth) * 6}deg)`;
+  // rows in front of you: up to three silhouettes, nearest is biggest
+  const inFront = Math.min(3, seat.row - 1);
+  let html = '';
+  for (let k = inFront; k >= 1; k--) {
+    const sz = .9 - (k - 1) * .2, lift = (k - 1) * 5 - 6;
+    html += `<div style="position:absolute;left:${-side * 6}%;right:${side * 6}%;bottom:${lift}vh;transform:scale(${sz});transform-origin:50% 100%;opacity:${1 - (k - 1) * .2}">${rowSVG(seat.row * 17 + k * 3 + seat.n, k === 1)}</div>`;
+  }
+  $('#heads').innerHTML = html;
+  $('#heads').style.height = '100%';
+  if (cur) $('#sT').nextElementSibling;
+}
+// punched holes along the stub = timeline
+const HOLES = 26;
+for (let i = 0; i < HOLES; i++) { const h = document.createElement('i'); $('#punch').appendChild(h); }
+$('#punch').onclick = e => { const r = $('#punch').getBoundingClientRect(); v.currentTime = (v.duration || cur.duration) * (e.clientX - r.left) / r.width; };
+v.ontimeupdate = () => {
+  const d = v.duration || cur.duration, k = Math.floor(v.currentTime / d * HOLES);
+  [...$('#punch').children].forEach((h, i) => h.classList.toggle('p', i < k));
+  $('#sTime').textContent = fmt(v.currentTime) + ' / ' + fmt(d); pos.set(cur.id, v.currentTime);
+};
+function setPlaying(p) { if (p) { v.play(); } else v.pause(); }
+v.onplay = () => { $('#pp').textContent = '❚❚ Pause'; hall.classList.add('immersed'); };
+v.onpause = () => { $('#pp').textContent = '▶ Weiter'; hall.classList.remove('immersed'); };
+$('#pp').onclick = () => setPlaying(v.paused);
+$('#prosc').onclick = () => setPlaying(v.paused);
+function enterHall() {
+  $('#sT').textContent = $('#tT').textContent;
+  v.src = cur.src; const r = pos.get(cur.id);
+  if (r > 30) v.addEventListener('loadedmetadata', () => v.currentTime = r, {once: true});
+  placeCamera(); hall.classList.add('show');
+  setTimeout(() => v.play().catch(() => {}), 1200);
+}
+$('#back').onclick = () => { v.pause(); v.removeAttribute('src'); v.load(); hall.classList.remove('show', 'immersed'); street.classList.remove('leave'); };
+addEventListener('keydown', e => {
+  if (e.key === 'Escape') { if ($('#ticketWrap').classList.contains('show')) $('#ticketWrap').classList.remove('show'); else if (hall.classList.contains('show')) $('#back').click(); }
+  if (!hall.classList.contains('show')) return;
+  if (e.code === 'Space') { e.preventDefault(); setPlaying(v.paused); }
+  if (e.key === 'ArrowRight') v.currentTime += 10;
+  if (e.key === 'ArrowLeft') v.currentTime -= 10;
+  if (e.key === 'ArrowUp' && seat.row > 1) { seat.row--; placeCamera(); }
+  if (e.key === 'ArrowDown' && seat.row < ROWS) { seat.row++; placeCamera(); }
+  if (e.key === 'f') document.fullscreenElement ? document.exitFullscreen() : document.documentElement.requestFullscreen();
+});
+</script>
+</body>
+</html>

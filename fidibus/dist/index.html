@@ -1,0 +1,267 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#2a1a0e">
+<title>Fidibus · Das Wohnzimmer</title>
+<meta name="description" content="Das Videoarchiv des Märchentheaters Fidibus – Kassetten aus dem Regal, eingelegt in den Videorekorder.">
+<link rel="icon" href="/assets/emblem.svg">
+<script src="/wohnzimmer-redirect.js"></script>
+<link rel="stylesheet" href="/assets/fonts/wohnzimmer/fonts.css">
+<style>
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%;overflow:hidden;background:#2a1a0e;overscroll-behavior:none}
+body{font-family:Caveat,cursive;color:#222;-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;touch-action:manipulation}
+
+/* The room is drawn on a fixed-size stage that is scaled to the screen.
+   Two layouts: landscape (desktop, iPad quer, iPhone quer) and portrait (iPhone/iPad hoch). */
+#vp{position:fixed;inset:0;overflow:hidden;contain:strict;transition:background-color 1s;
+  background:linear-gradient(transparent var(--floor,50%),#6f4527 var(--floor,50%)),
+    radial-gradient(circle at 25% 25%,#c9a46a 0 9%,transparent 10%) 0 0/34px 34px,
+    repeating-linear-gradient(90deg,#e6d3a8 0 11px,#dcc596 11px 17px)}
+#stage{position:absolute;left:0;top:0;transform-origin:0 0;overflow:hidden;}
+#stage.moving{transition:transform 1.6s cubic-bezier(.65,0,.25,1)}
+#stage{
+  background:
+    radial-gradient(circle at 25% 25%,#c9a46a 0 9%,transparent 10%) 0 0/70px 70px,
+    radial-gradient(circle at 75% 75%,#b88f55 0 6%,transparent 7%) 0 0/70px 70px,
+    repeating-linear-gradient(90deg,#e6d3a8 0 22px,#dcc596 22px 35px)}
+.L #stage{width:1440px;height:900px}
+.P #stage{width:820px;height:1480px}
+.floor{position:absolute;left:0;right:0;bottom:0;background:repeating-linear-gradient(90deg,#7a4e2c 0 120px,#6b4325 120px 122px,#80532f 122px 240px);box-shadow:inset 0 14px 20px rgba(0,0,0,.35)}
+.L .floor{top:790px}.P .floor{top:1440px}
+
+/* ---------- shelf ---------- */
+.shelf{position:absolute;z-index:2;background:#5b3a20;padding:14px 14px 0;border-radius:3px;
+  box-shadow:0 20px 40px rgba(0,0,0,.35),inset 0 0 0 4px #4a2e18;
+  background-image:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 2px,transparent 2px 7px)}
+.L .shelf{left:44px;top:160px;width:560px}
+.P .shelf{left:60px;top:830px;width:700px}
+.board{display:flex;align-items:flex-end;gap:2px;height:206px;padding:0 8px;border-bottom:14px solid #7b522f;margin-bottom:14px;position:relative}
+.P .board{height:192px;margin-bottom:12px}
+.board::after{content:attr(data-label);position:absolute;right:6px;bottom:-14px;font:12px/14px 'Archivo Black',sans-serif;color:#d9b98a;letter-spacing:.08em}
+.spine{position:relative;width:26px;height:182px;cursor:pointer;transition:transform .25s;flex:none}
+.P .spine{width:30px}
+@media (hover:hover){.spine:hover{transform:translateY(-14px)}}
+.spine.out{visibility:hidden}
+.spine.gap{width:0;margin:0 -1px}
+/* faces shared by the shelf spine and the 3D cassette's back */
+.sp{position:absolute;inset:0;border-radius:2px 2px 0 0;overflow:hidden}
+.sp .txt{position:absolute;inset:6px 2px;writing-mode:vertical-rl;transform:rotate(180deg);display:flex;align-items:center;gap:6px;overflow:hidden;white-space:nowrap}
+.sp .txt span{flex:0 1 auto;min-height:0;overflow:hidden;text-overflow:ellipsis}
+.sp .txt small{flex:none;margin-top:auto}
+.sp.print{background:linear-gradient(90deg,rgba(0,0,0,.25),transparent 20%,transparent 80%,rgba(0,0,0,.3)),var(--c)}
+.sp.print .txt{color:#fff8e1;font:12px 'Archivo Black',sans-serif}
+.sp.print .txt small{font:9px 'Archivo Black';opacity:.8;letter-spacing:.2em}
+.sp.bare{background:linear-gradient(90deg,#000,#232323 25%,#1a1a1a 75%,#000)}
+.sp.bare .sticker{position:absolute;left:3px;right:3px;top:9%;bottom:8%;background:var(--c,#f4f1e6);border-radius:1px;box-shadow:inset 0 0 0 1px rgba(0,0,0,.08)}
+.sp.bare .txt{inset:11% 3px 10%;color:#1d2a6b;font:700 16px/1 Caveat,cursive}
+.sp.bare .txt s{flex:none;color:#777;font:500 12px Caveat;text-decoration-thickness:1.5px}
+.sp.bare.marker .txt span{font:11px 'Permanent Marker',cursive;color:#111}
+.spine .rew{position:absolute;bottom:2px;left:50%;transform:translateX(-50%);width:16px;height:16px;border-radius:50%;background:#ffd31a;color:#c00;font:bold 10px/16px sans-serif;text-align:center;box-shadow:0 1px 2px rgba(0,0,0,.5);z-index:2}
+.postit{position:absolute;z-index:3;width:190px;padding:10px 12px;background:#fff59b;transform:rotate(-4deg);box-shadow:0 6px 12px rgba(0,0,0,.2);font:700 24px/1.05 Caveat;color:#283a8a}
+.postit small{display:block;font-size:17px;font-weight:500;color:#555;margin-top:4px}
+.L .postit{left:54px;top:62px}.P .postit{left:560px;top:780px;transform:rotate(5deg)}
+
+/* ---------- TV ---------- */
+.tv{position:absolute;z-index:3;background:linear-gradient(#3b3b3e,#232325);border-radius:26px;padding:34px 120px 36px 34px;
+  box-shadow:0 30px 50px rgba(0,0,0,.45),inset 0 2px 0 rgba(255,255,255,.15),inset 0 -6px 12px rgba(0,0,0,.6)}
+.L .tv{left:664px;top:84px;width:710px;height:568px}
+.P .tv{left:60px;top:40px;width:700px;height:560px}
+.tube{position:relative;width:100%;height:100%;border-radius:9%/12%;overflow:hidden;background:#0d0f0e;cursor:zoom-in;
+  box-shadow:inset 0 0 0 10px #151515,inset 0 0 40px 18px rgba(0,0,0,.9)}
+.tube video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000;filter:saturate(1.15) contrast(1.08) blur(.35px)}
+.tube canvas{position:absolute;inset:0;width:100%;height:100%;opacity:0}
+.tube.noise canvas{opacity:1}
+.tube.hidevid video{opacity:0}
+.tube .blue{position:absolute;inset:0;background:#1d2ccf;opacity:0}
+.tube.bluescreen .blue{opacity:1}
+.scan{position:absolute;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.28) 0 1px,transparent 1px 3px);mix-blend-mode:multiply}
+.glass{position:absolute;inset:0;pointer-events:none;border-radius:inherit;
+  background:radial-gradient(ellipse at 30% 15%,rgba(255,255,255,.14),transparent 45%),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.65) 100%)}
+.tube.vhsfx .hs{position:absolute;left:0;right:0;bottom:0;height:3.5%;pointer-events:none;
+  background:repeating-linear-gradient(90deg,rgba(255,255,255,.25) 0 3px,transparent 3px 9px,rgba(0,0,0,.6) 9px 14px);animation:hs .18s steps(3) infinite;mix-blend-mode:screen}
+@keyframes hs{to{background-position:23px 0}}
+.tube.vhsfx video{animation:wob 6s infinite}
+@keyframes wob{0%,96%,100%{transform:none}97%{transform:translateX(3px) skewX(-1deg)}98%{transform:translateX(-2px)}}
+.tube.seek .bars{opacity:1}
+.bars{position:absolute;inset:0;opacity:0;pointer-events:none;background:
+  linear-gradient(transparent 0 30%,rgba(255,255,255,.55) 31%,rgba(0,0,0,.6) 33%,transparent 34%,transparent 64%,rgba(255,255,255,.5) 65%,rgba(0,0,0,.6) 67%,transparent 68%);
+  background-size:100% 200%;animation:bars .5s linear infinite}
+@keyframes bars{to{background-position:0 -200%}}
+.osd{position:absolute;inset:7% 8%;pointer-events:none;font:34px/1 VT323,monospace;color:#7dff8a;text-shadow:2px 2px 0 #000,0 0 6px rgba(120,255,140,.6);display:flex;flex-direction:column;justify-content:space-between}
+.osd .row{display:flex;justify-content:space-between;gap:12px}
+.osd .hint{font-size:26px;opacity:.85}
+.tube.off > *:not(.glass){opacity:0}
+.tube.poweron{animation:pon .5s ease-out}
+@keyframes pon{0%{clip-path:inset(49.5% 0 49.5% 0);filter:brightness(4)}60%{clip-path:inset(0 0 0 0);filter:brightness(2)}100%{filter:none}}
+.tube.poweroff{animation:poff .45s ease-in forwards}
+@keyframes poff{0%{clip-path:inset(0);filter:brightness(1)}50%{clip-path:inset(49.6% 0 49.6% 0);filter:brightness(3)}100%{clip-path:inset(49.6% 49.6% 49.6% 49.6%);filter:brightness(5)}}
+/* fullscreen: the tube (with its CRT look) fills the screen, a VCR-style bar appears on tap */
+.tube:fullscreen{border-radius:0;cursor:default;background:#000}
+.tube:-webkit-full-screen{border-radius:0;width:100%;height:100%;background:#000}
+.tube:fullscreen .glass{border-radius:0}
+.fsbar{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translateX(-50%);display:none;max-width:96vw;gap:10px;align-items:center;padding:10px 14px;background:rgba(0,0,0,.6);border:2px solid #7dff8a;border-radius:6px;font:28px VT323,monospace;color:#7dff8a;z-index:5;transition:opacity .4s}
+body.zoomed .fsbar{display:flex;animation:fadein .6s 1.4s both}
+/* fullscreen: only the actual video — no scanlines, glass, noise band, wobble, search streaks, OSD or blur */
+body.zoomed .tube .scan,body.zoomed .tube .glass,body.zoomed .tube .hs,body.zoomed .tube .bars,body.zoomed .tube .osd,body.zoomed .tube .zoomhint{display:none}
+body.zoomed .tube video{filter:none;animation:none;transform:none}
+body.zoomed .tube{box-shadow:none;border-radius:0;background:#000}
+/* …and everything around the picture fades to black while the camera moves in */
+#stage>.floor,#stage>.postit,#stage>.shelf,#stage>.cabinet,.tvside,.brand{transition:opacity 1.2s}
+.tv,#stage,#vp{transition:background-color 1.2s,box-shadow 1.2s}
+body.zoomed #stage>.floor,body.zoomed #stage>.postit,body.zoomed #stage>.shelf,body.zoomed #stage>.cabinet,body.zoomed .tvside,body.zoomed .brand{opacity:0}
+body.zoomed #stage,body.zoomed #vp{background:#000}
+body.zoomed .tv{background:#000;box-shadow:none}
+@keyframes fadein{from{opacity:0}}
+body.zoomed.calm .fsbar{opacity:0;pointer-events:none}
+body.zoomed.calm{cursor:none}
+/* hint on the TV in the living room: you can step into the picture */
+.zoomhint{position:absolute;right:10%;bottom:9%;font:24px/1 VT323,monospace;color:#7dff8a;text-shadow:2px 2px 0 #000;opacity:0;pointer-events:none;transition:opacity .6s}
+.tube.hint .zoomhint{opacity:.9;animation:blink 1.2s steps(2) 3}
+@keyframes blink{50%{opacity:.25}}
+.tvicon{position:absolute;left:36px;top:8px;font:13px 'Archivo Black';color:#888;letter-spacing:.1em;cursor:pointer}
+.fsbar button{font:inherit;color:inherit;background:none;border:1px solid rgba(125,255,138,.5);border-radius:4px;min-width:52px;height:44px;cursor:pointer}
+.fsbar span{white-space:nowrap}
+.fsbar .prog{width:min(46vw,520px);height:14px;border:1px solid #7dff8a;position:relative;cursor:pointer;touch-action:none}
+.fsbar .prog i{position:absolute;left:0;top:0;bottom:0;background:#7dff8a;width:0}
+@media (max-width:600px){.fsbar{gap:6px;padding:6px 8px;font-size:22px}.fsbar button{min-width:40px;height:40px}.fsbar .prog{width:28vw}}
+.tvside{position:absolute;right:22px;top:46px;bottom:46px;width:72px;display:flex;flex-direction:column;align-items:center;gap:28px}
+.grille{width:100%;flex:1;background:repeating-linear-gradient(0deg,#151515 0 3px,#2d2d30 3px 6px);border-radius:4px}
+.knob{width:46px;height:46px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#666,#1b1b1b 70%);box-shadow:0 2px 3px rgba(0,0,0,.6);cursor:ns-resize;position:relative;touch-action:none}
+.knob::after{content:"";position:absolute;left:47%;top:8%;width:6%;height:30%;background:#ccc;border-radius:2px}
+.power{width:60px;padding:8px 0;border-radius:3px;background:#111;color:#999;font:10px 'Archivo Black';text-align:center;cursor:pointer;letter-spacing:.1em;border:0}
+.power i{display:inline-block;width:6px;height:6px;border-radius:50%;background:#400;margin-right:4px;vertical-align:1px}
+.on .power i{background:#f22;box-shadow:0 0 6px #f22}
+.brand{position:absolute;left:36px;bottom:9px;font:12px 'Archivo Black';letter-spacing:.35em;color:#888}
+
+/* ---------- cabinet + VCR ---------- */
+.cabinet{position:absolute;background:linear-gradient(#8a5a33,#6d4425);border-radius:3px;box-shadow:0 20px 40px rgba(0,0,0,.35)}
+.L .cabinet{left:632px;top:652px;width:774px;height:150px}
+.P .cabinet{left:40px;top:600px;width:740px;height:170px}
+.vcr{position:absolute;left:24px;top:28px;width:590px;height:92px;z-index:7;border-radius:4px;color:#aaa;font:10px 'Archivo Black';letter-spacing:.08em;
+  background:linear-gradient(#2a2a2c,#121213);box-shadow:inset 0 1px 0 rgba(255,255,255,.18),0 6px 10px rgba(0,0,0,.5);
+  /* a real hole where the cassette goes in: things behind the front panel show through only here */
+  -webkit-mask:linear-gradient(#000 0 0) 22px 28px/var(--hw) var(--hh) no-repeat,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) 22px 28px/var(--hw) var(--hh) no-repeat exclude,linear-gradient(#000 0 0);--hw:190px;--hh:28px}
+.P .vcr{width:560px;top:36px}
+.vcr .bezel{position:absolute;left:16px;top:22px;width:202px;height:40px;border-radius:3px;box-shadow:inset 0 0 0 4px #0b0b0b,0 1px 0 rgba(255,255,255,.1)}
+.vcr .bezel::after{content:"";position:absolute;inset:4px;box-shadow:0 0 0 1px rgba(255,255,255,.06)}
+/* the inside of the machine + spring-loaded flap, sitting *behind* the front panel */
+.inside{position:absolute;z-index:5;left:46px;top:56px;width:190px;height:28px;background:linear-gradient(#000,#0b0b0c 70%,#161618);perspective:240px;overflow:hidden}
+.P .inside{top:64px}
+.flap{position:absolute;inset:1px 2px;background:linear-gradient(#2b2b2e,#18181a 70%,#101012);transform-origin:50% 0;transition:transform .25s cubic-bezier(.3,1.6,.5,1);box-shadow:inset 0 -2px 0 rgba(255,255,255,.05)}
+.flap::after{content:"VHS";position:absolute;right:8px;top:9px;font:9px 'Archivo Black';color:#555;letter-spacing:.1em}
+.flap.open{transform:rotateX(-82deg);transition:transform .18s ease-out}
+.vfd{position:absolute;left:236px;top:24px;width:150px;height:40px;background:#050806;border-radius:3px;font:30px/40px VT323;color:#5cf0d2;text-shadow:0 0 6px #2fd2b0;text-align:right;padding-right:8px}
+.vfd small{position:absolute;left:6px;top:3px;font:12px/1 VT323;color:#3cb39b}
+.vfd .cas-ico{position:absolute;left:6px;bottom:4px;font:12px/1 VT323;color:#3cb39b}
+.btns{position:absolute;right:12px;top:20px;display:grid;grid-template-columns:repeat(4,38px);gap:5px}
+.btns button{height:22px;border:0;border-radius:2px;background:linear-gradient(#4a4a4d,#2e2e30);color:#ddd;font-size:12px;cursor:pointer;box-shadow:0 2px 0 #000;touch-action:none}
+.btns button:active,.btns button.held{transform:translateY(2px);box-shadow:none}
+.btns button.rec{color:#f33}
+.vcr .lbl{position:absolute;left:22px;bottom:6px;font-size:9px;color:#777;letter-spacing:.3em}
+.vcrtop{position:absolute;left:24px;top:14px;width:590px;height:15px;z-index:7;background:linear-gradient(#45454a,#2c2c2f);clip-path:polygon(2.5% 0,97.5% 0,100% 100%,0 100%);box-shadow:inset 0 -1px 0 rgba(0,0,0,.6)}
+.vcrtop::after{content:"";position:absolute;left:30%;right:30%;top:4px;height:5px;background:repeating-linear-gradient(90deg,#1a1a1c 0 3px,transparent 3px 7px)}
+.P .vcr~.vcrtop,.P .vcrtop{top:22px;width:560px}
+.cabtop{position:absolute;left:-10px;right:-10px;top:-16px;height:17px;background:linear-gradient(#a06b3e,#8a5a33);clip-path:polygon(1.5% 0,98.5% 0,100% 100%,0 100%)}
+.vcr.thud,.vcrtop.thud{animation:thud .18s}
+@keyframes thud{50%{transform:translateY(1.5px)}}
+.remote{position:absolute;width:96px;height:132px;background:linear-gradient(#333,#1c1c1c);border-radius:10px 10px 16px 16px;padding:8px;transform:rotate(-8deg);box-shadow:0 8px 12px rgba(0,0,0,.5);display:grid;grid-template-columns:repeat(3,1fr);gap:4px;align-content:start;z-index:7}
+.L .remote{left:650px;top:10px}.P .remote{left:620px;top:20px}
+.remote button{height:20px;border:0;border-radius:6px;background:#555;color:#eee;font:13px VT323;cursor:pointer;padding:0}
+.remote button:active{background:#888}
+.remote .cap{grid-column:1/-1;font:8px 'Archivo Black';color:#888;text-align:center;letter-spacing:.15em;margin-bottom:2px}
+
+/* ---------- the 3D cassette ----------
+   A box (180 x 24 x 102) whose faces are sized by JS every frame. While it goes into the slot only the part
+   still outside is drawn: its far end sits flush with the front panel, so nothing needs to be clipped. */
+.air{position:absolute;inset:0;pointer-events:none;perspective:1500px;z-index:50}
+.cas{position:absolute;left:0;top:0;width:0;height:0;transform-style:preserve-3d;display:none}
+.cas>div{position:absolute;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden}
+.cas .back{box-shadow:inset 0 0 0 1px rgba(0,0,0,.6)}
+.cas .front{background:linear-gradient(#1c1c1e,#0d0d0e)}
+.cas .top{background:linear-gradient(to top,#232326,#151517);box-shadow:inset 0 -1px 0 rgba(255,255,255,.25)}
+.cas .top .in{position:absolute;left:0;right:0;bottom:0;height:102px}
+/* moulded plastic: fine ribs, the window with two reels, label recess near the spine */
+.cas .top .in::before{content:"";position:absolute;inset:0;background:
+   linear-gradient(to bottom,rgba(255,255,255,.07),transparent 30%),
+   repeating-linear-gradient(90deg,rgba(255,255,255,.025) 0 1px,transparent 1px 4px)}
+.cas .top .ao{position:absolute;inset:0;pointer-events:none;background:linear-gradient(to bottom,rgba(0,0,0,.85),rgba(0,0,0,0) 22px)}
+.cas .lab{position:absolute;left:12px;right:12px;bottom:8px;height:30px;background:var(--c,#f4f1e6);font:700 18px/30px Caveat;color:#1d2a6b;text-align:center;overflow:hidden;white-space:nowrap;padding:0 6px;text-overflow:ellipsis;box-shadow:0 0 0 1px rgba(0,0,0,.4)}
+.cas .lab.print{font:11px/30px 'Archivo Black';color:#fff8e1}
+.cas .win{position:absolute;left:44px;right:44px;bottom:46px;height:34px;background:linear-gradient(rgba(90,70,50,.55),rgba(40,28,18,.85));border-radius:3px;box-shadow:inset 0 0 0 2px #050505,inset 0 6px 8px rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;padding:0 3px}
+.cas .win i{width:var(--r1,30px);height:var(--r1,30px);border-radius:50%;background:radial-gradient(circle,#e6e6e6 0 20%,#2e2016 22%,#4a3524 70%,#2e2016)}
+.cas .win i+i{width:var(--r2,14px);height:var(--r2,14px)}
+.cas .screw{position:absolute;width:5px;height:5px;border-radius:50%;background:#0a0a0a;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.cas .side{background:linear-gradient(#2a2a2d,#1b1b1d 45%,#0f0f10),repeating-linear-gradient(90deg,transparent 0 9px,rgba(0,0,0,.35) 9px 10px);background-blend-mode:multiply;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+.cas .bottom{background:#0b0b0c}
+/* shadow the cassette throws on the VCR front, below the slot */
+.slotshadow{position:absolute;left:22px;top:54px;width:190px;height:16px;border-radius:50%;background:radial-gradient(ellipse at 50% 0,rgba(0,0,0,.85),transparent 70%);opacity:0;pointer-events:none;filter:blur(2px)}
+.toast{position:fixed;left:50%;top:calc(14px + env(safe-area-inset-top));transform:translateX(-50%);background:#fff59b;padding:6px 16px;font:700 22px Caveat;color:#283a8a;box-shadow:0 6px 12px rgba(0,0,0,.2);opacity:0;transition:opacity .3s;z-index:60;pointer-events:none;max-width:90vw;text-align:center}
+.toast.show{opacity:1}
+</style>
+</head>
+<body class="L">
+<div id="vp"><div id="stage">
+  <div class="floor"></div>
+  <div class="postit">Fidibus-Bänder<small>bitte nicht überspielen!!</small></div>
+  <div class="shelf" id="shelf"></div>
+
+  <div class="tv" id="tv">
+    <div class="tube off" id="tube">
+      <video id="v" playsinline webkit-playsinline preload="none"></video>
+      <div class="blue"></div>
+      <canvas id="snow" width="160" height="120"></canvas>
+      <div class="bars"></div><div class="hs"></div>
+      <div class="scan"></div>
+      <div class="osd"><div class="row"><span id="osdL"></span><span id="osdR"></span></div><div class="row"><span id="osdB" class="hint"></span><span id="osdC"></span></div></div>
+      <div class="glass"></div>
+      <div class="zoomhint">⛶ ANTIPPEN = VOLLBILD</div>
+    </div>
+    <div class="tvside"><div class="knob" title="Lautstärke (ziehen)" id="vol"></div><div class="grille"></div><button class="power" id="pwr"><i></i>NETZ</button></div>
+    <div class="brand">FIDIBUS·COLOR 51</div>
+  </div>
+
+  <div class="cabinet" id="cab">
+    <div class="cabtop"></div><div class="vcrtop" id="vcrTop"></div>
+    <div class="inside" id="inside"><div class="flap" id="flap"></div></div>
+    <div class="vcr" id="vcr">
+      <div class="bezel"></div>
+      <div class="vfd" id="vfd"><small id="vfdS"></small>--:--</div>
+      <div class="btns">
+        <button data-k="eject" title="Auswerfen">⏏</button>
+        <button data-k="play" title="Wiedergabe">▶</button>
+        <button data-k="pause" title="Pause">❚❚</button>
+        <button data-k="stop" title="Stopp">■</button>
+        <button data-k="rew" title="Rückspulen (halten)">◀◀</button>
+        <button data-k="ff" title="Vorspulen (halten)">▶▶</button>
+        <button data-k="rec" class="rec" title="Aufnahme">●</button>
+        <button data-k="full" title="Vollbild">⛶</button>
+      </div>
+      <div class="lbl">VIDEO CASSETTE RECORDER · HQ</div>
+      <div class="slotshadow" id="slotShadow"></div>
+    </div>
+    <div class="remote" id="remote"><div class="cap">INDEX</div></div>
+  </div>
+
+  <div class="air" id="air"><div class="cas" id="cas">
+    <div class="back" id="casBack"></div><div class="front" id="casFront"></div>
+    <div class="top" id="casTop"><div class="in"><div class="win" id="casWin"><i></i><i></i></div><div class="lab" id="casLab"></div>
+      <div class="screw" style="left:8px;top:8px"></div><div class="screw" style="right:8px;top:8px"></div><div class="screw" style="left:86px;top:6px"></div></div><div class="ao" id="casAO"></div></div>
+    <div class="bottom" id="casBottom"></div><div class="side" id="casL"></div><div class="side" id="casR"></div>
+  </div></div>
+</div></div>
+<div class="toast" id="toast"></div>
+<div class="fsbar" id="fsbar">
+        <button data-f="rew">◀◀</button><button data-f="pp">❚❚</button><button data-f="ff">▶▶</button>
+        <div class="prog" id="prog"><i></i></div><span id="fsTime">0:00</span><button data-f="exit" title="Zurück ins Wohnzimmer">✕</button>
+      </div>
+
+<script type="module" src="/wohnzimmer.js"></script>
+</body>
+</html>

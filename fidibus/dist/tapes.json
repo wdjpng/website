@@ -1,0 +1,89 @@
+{
+ "vhs-01": {
+  "title": "Aschenbrödel",
+  "label": "Aschenbrödel · 01",
+  "evidence": "Fidibus' prologue names Aschenbrödel; same sets as 02/03/15"
+ },
+ "vhs-02": {
+  "title": "Aschenbrödel",
+  "label": "Aschenbrödel · 02",
+  "evidence": "prologue names Aschenbrödel"
+ },
+ "vhs-03": {
+  "title": "Aschenbrödel",
+  "label": "Aschenbrödel · 03",
+  "note": "beginnt mit Aufnahmen hinter den Kulissen",
+  "evidence": "Aschenbrödel poster at the start; mid-tape dialogue names Aschenbrödel"
+ },
+ "vhs-04": {
+  "title": "Zwerg Nase",
+  "label": "Zwerg Nase · 04",
+  "evidence": "herb witch cooks the soup, 'Nase'; market scene with old woman and boy"
+ },
+ "vhs-05": {
+  "title": "König Drosselbart",
+  "label": "Drosselbart · 05",
+  "evidence": "title card 'König Drosselbart'; Prinzessin Viola"
+ },
+ "vhs-06": {
+  "title": "Hurleburlebutz – dr verzauberti Prinz",
+  "label": "Hurleburlebutz · 06",
+  "season": "1989",
+  "note": "Programmzettel: Samstag, 21. Januar 1989, Turnhalle Primarschule Sissach; Leitung Sabine Rasser und Roland Münzel. Beginnt mit Aufnahmen hinter den Kulissen.",
+  "evidence": "filmed programme leaflet at 0:00"
+ },
+ "vhs-07": {
+  "title": "?",
+  "label": "Prinzessin Belinda ?",
+  "note": "Titel unbekannt: Prinzessin Belinda wird am Geburtstag des Königs in eine Wurzel verzaubert (Hofschneider, «Konfusius»). Vermutlich eine eigene Fidibus-Geschichte.",
+  "evidence": "transcripts at 0–9, 25–33, 50–57, 72–79 min; no title card found"
+ },
+ "vhs-08": {
+  "title": "König Drosselbart",
+  "label": "Drosselbart · 08",
+  "evidence": "same sets as 05; Prinzessin Viola"
+ },
+ "vhs-09": {
+  "title": "Dornröschen",
+  "label": "Dornröschen · 09",
+  "evidence": "Fidibus: '…das Märchen vom Dornröschen'; rose hedge, kiss"
+ },
+ "vhs-10": {
+  "title": "Fidibus und dr Donnerwätter",
+  "label": "Donnerwätter · 10",
+  "note": "Märlitheater Sabine Rasser; beginnt mit Plakat, Foyer und Garderobe",
+  "evidence": "poster at 0:05; 'Donnerwetter' throughout"
+ },
+ "vhs-11": {
+  "title": "Rumpelstilzchen",
+  "label": "Rumpelstilzli · 11",
+  "evidence": "spinning wheel, straw into gold"
+ },
+ "vhs-12": {
+  "title": "Zwerg Nase",
+  "label": "Zwerg Nase · 12",
+  "evidence": "herb soup, 'Nase'; goose at the market"
+ },
+ "vhs-13": {
+  "title": "Fidibus und dr Donnerwätter",
+  "label": "Donnerwätter · 13",
+  "note": "beginnt in der Garderobe",
+  "evidence": "same sets as 10; 'Donnerwetter'"
+ },
+ "vhs-14": {
+  "title": "König Drosselbart",
+  "label": "Drosselbart · 14",
+  "note": "beginnt mit Aufnahmen hinter den Kulissen",
+  "evidence": "Prinzessin Viola; same palace/kitchen sets as 05/08"
+ },
+ "vhs-15": {
+  "title": "Aschenbrödel",
+  "label": "Aschenbrödel · 15",
+  "evidence": "dialogue names Aschenbrödel"
+ },
+ "vhs-16": {
+  "title": "Rumpelstilzchen",
+  "label": "Rumpelstilzli · 16",
+  "evidence": "Müllermeister; straw spun into gold"
+ }
+}
