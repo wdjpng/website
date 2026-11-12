@@ -86,4 +86,4 @@ One hike I can really, really recommend with this is the "5-Seen-Wanderung" in P
 </div>
 
 
-Do you have suggestion for what I completely forgot to write here? Write the paragraph you would like to see added here, send me a [mail](mailto:lmuenzel@student.ethz.ch) and I can add it!
+Do you have suggestion for what I completely forgot to write here? Write the paragraph you would like to see added here, send me a [mail](mailto:muenzel.lukas@gmail.com) and I can add it!

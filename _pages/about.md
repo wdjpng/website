@@ -30,7 +30,7 @@ We should use AGI to massively accelerate research while ensuring that the gains
 
 
 
-Also I really love meeting new interesting people! Thus, if anything on this website seems interesting to you, you are more than welcome to write me a [mail](mailto:lmuenzel@student.ethz.ch?subject=Lunch) and we can gladly go for lunch or a coffee.
+Also I really love meeting new interesting people! Thus, if anything on this website seems interesting to you, you are more than welcome to write me a [mail](mailto:muenzel.lukas@gmail.com?subject=Lunch) and we can gladly go for lunch or a coffee.
 
 Cheers,
 
